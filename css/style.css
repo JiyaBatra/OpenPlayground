@@ -374,6 +374,9 @@ html[data-theme="dark"] #toggle-mode-btn i {
     background: linear-gradient(135deg, #ecfdf5 0%, #a7f3d0 100%);
     color: #059669;
 }
+.educonnect-cover {
+   background: linear-gradient(135deg, #c7a9e9 0%, #a1c4fd 100%);
+}
 
 .card-content {
     padding: 1.5rem;
