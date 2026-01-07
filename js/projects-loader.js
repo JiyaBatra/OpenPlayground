@@ -209,7 +209,7 @@ class ProjectsLoader {
         
         card.innerHTML = `
             <div class="card-cover" style="${project.coverStyle}">
-                <i class="${project.icon}"></i>
+                <i class="${project.icon}" aria-hidden="true"></i>
             </div>
             <div class="card-content">
                 <div class="card-header-flex">
