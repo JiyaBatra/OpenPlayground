@@ -2,6 +2,7 @@
 // OpenPlayground - Main JavaScript
 // ===============================
 
+
 import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
 
 
@@ -11,7 +12,12 @@ import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
 const html = document.documentElement;
 const toggleBtn = document.getElementById("toggle-mode-btn");
 const themeIcon = document.getElementById("theme-icon");
+
+
 // ===============================
+
+// THEME TOGGLE
+
 // Architecture: ProjectVisibilityEngine Integration
 // ===============================
 // We're introducing a centralized visibility engine to handle project filtering logic.
@@ -27,32 +33,17 @@ import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
 
 // ===============================
 // Theme Toggle
-// ===============================
 
-// Elements related to theme toggle (light/dark mode)
+// ===============================
 const toggleBtn = document.getElementById("toggle-mode-btn");
 const themeIcon = document.getElementById("theme-icon");
 const html = document.documentElement;
 
-// Load previously saved theme from localStorage or default to light theme
 const savedTheme = localStorage.getItem("theme") || "light";
 html.setAttribute("data-theme", savedTheme);
 updateThemeIcon(savedTheme);
 
-// Toggle between light and dark theme when the user clicks the theme button
-toggleBtn.addEventListener("click", () => {
-    const newTheme =
-        html.getAttribute("data-theme") === "light" ? "dark" : "light";
-    html.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    updateThemeIcon(newTheme);
 
-    // Add shake animation
-    toggleBtn.classList.add("shake");
-    setTimeout(() => toggleBtn.classList.remove("shake"), 500);
-});
-
-// Updates the theme icon based on the currently active theme
 function updateThemeIcon(theme) {
     if (theme === "dark") {
         themeIcon.className = "ri-moon-fill";
@@ -61,47 +52,85 @@ function updateThemeIcon(theme) {
     }
 }
 
-// ===============================
-// Scroll to Top
-// ===============================
+toggleBtn?.addEventListener("click", () => {
+    const newTheme = html.getAttribute("data-theme") === "light" ? "dark" : "light";
 
-// Button used to scroll back to the top of the page
+// Toggle between light and dark theme when the user clicks the theme button
+toggleBtn.addEventListener("click", () => {
+    const newTheme =
+        html.getAttribute("data-theme") === "light" ? "dark" : "light";
+
+  html.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    updateThemeIcon(newTheme);
+    toggleBtn.classList.add("shake");
+    setTimeout(() => toggleBtn.classList.remove("shake"), 500);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("project-search");
+    const projectsPlaceholder = document.getElementById("projects-placeholder");
+    const emptyState = document.getElementById("empty-state");
+
+    // Function to filter projects
+    function filterProjects() {
+        // Get current cards (in case they are dynamically loaded)
+        const cards = projectsPlaceholder.querySelectorAll(".card");
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title = card.querySelector(".card-heading")?.textContent.toLowerCase() || "";
+            const description = card.querySelector(".card-description")?.textContent.toLowerCase() || "";
+            const category = card.dataset.category?.toLowerCase() || "";
+
+            if (title.includes(query) || description.includes(query) || category.includes(query)) {
+                card.style.display = ""; // Keep default CSS layout
+                visibleCount++;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        emptyState.style.display = visibleCount === 0 ? "flex" : "none";
+    }
+
+    // Listen for input on search box
+    searchInput.addEventListener("input", filterProjects);
+
+    // Optional: if projects are loaded asynchronously, observe changes
+    const observer = new MutationObserver(() => {
+        filterProjects(); // Re-apply filter whenever new cards are added
+    });
+
+    observer.observe(projectsPlaceholder, { childList: true, subtree: true });
+});
+
+
+// ===============================
+// SCROLL TO TOP
+// ===============================
 const scrollBtn = document.getElementById("scrollToTopBtn");
-
-// Show or hide the scroll-to-top button based on scroll position
 window.addEventListener("scroll", () => {
     scrollBtn.classList.toggle("show", window.scrollY > 300);
 });
-
-// Smoothly scroll to the top when the button is clicked
-scrollBtn.addEventListener("click", () => {
+scrollBtn?.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 // ===============================
-// Mobile Navbar
+// MOBILE NAVBAR
 // ===============================
-
-// Mobile navigation toggle elements
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 
-if (navToggle && navLinks) {
-    // Toggle mobile navigation menu and update menu icon
+if(navToggle && navLinks){
     navToggle.addEventListener("click", () => {
         navLinks.classList.toggle("active");
-
-        // Toggle icon
         const icon = navToggle.querySelector("i");
-        if (navLinks.classList.contains("active")) {
-            icon.className = "ri-close-line";
-        } else {
-            icon.className = "ri-menu-3-line";
-        }
+        icon.className = navLinks.classList.contains("active") ? "ri-close-line" : "ri-menu-3-line";
     });
-
-    // Close mobile menu when a navigation link is clicked
-    navLinks.querySelectorAll("a").forEach((link) => {
+    navLinks.querySelectorAll("a").forEach(link => {
         link.addEventListener("click", () => {
             navLinks.classList.remove("active");
             navToggle.querySelector("i").className = "ri-menu-3-line";
@@ -110,9 +139,14 @@ if (navToggle && navLinks) {
 }
 
 // ===============================
-// Projects Logic
+// PROJECTS SEARCH, FILTER, SORT, PAGINATION
 // ===============================
 
+  const searchInput = document.getElementById("project-search");
+const sortSelect = document.getElementById("project-sort");
+const filterBtns = document.querySelectorAll(".filter-btn");
+
+  
 // Number of project cards displayed per page
 const itemsPerPage = 9;
 // Tracks the current page number for pagination
@@ -168,8 +202,16 @@ const paginationContainer = document.getElementById("pagination-controls");
 const emptyState = document.getElementById("empty-state");
 
 
+
 const scrollBtn = document.getElementById("scrollToTopBtn");
 const navbar = document.getElementById("navbar");
+
+let allProjectsData = [];
+let currentPage = 1;
+const itemsPerPage = 9;
+let currentCategory = "all";
+let currentSort = "default";
+
 
 const allCards = Array.from(document.querySelectorAll(".card"));
 
@@ -225,9 +267,14 @@ toggleBtn?.addEventListener("click", () => {
   setTimeout(() => toggleBtn.classList.remove("shake"), 500);
 });
 
-// Fetch project data from projects.json and initialize project rendering
+
+// Fetch projects JSON
 async function fetchProjects() {
     try {
+
+        const res = await fetch("./projects.json");
+        allProjectsData = await res.json();
+
         const response = await fetch("./projects.json");
         const data = await response.json();
         allProjectsData = data;
@@ -252,20 +299,26 @@ async function fetchProjects() {
 
         visibilityEngine = new ProjectVisibilityEngine(projectMetadata);
 
+
         renderProjects();
-    } catch (error) {
-        // Display a fallback message if project data fails to load
-        console.error("Error loading projects:", error);
-        if (projectsContainer) {
-            projectsContainer.innerHTML = `
-                <div class="empty-state">
-                    <h3>Unable to load projects</h3>
-                    <p>Please try refreshing the page</p>
-                </div>
-            `;
-        }
+    } catch(err) {
+        console.error("Failed to load projects:", err);
+        projectsContainer.innerHTML = `<p>Unable to load projects.</p>`;
     }
 }
+
+
+// Render projects based on search/filter/sort/pagination
+function renderProjects() {
+    if(!projectsContainer) return;
+
+    const searchText = searchInput.value.toLowerCase();
+    let filtered = allProjectsData.filter(p => 
+        p.title.toLowerCase().includes(searchText) || 
+        p.description.toLowerCase().includes(searchText)
+    );
+
+    if(currentCategory !== "all") filtered = filtered.filter(p => p.category === currentCategory);
 
 // ===============================
 // Event Listeners
@@ -361,33 +414,38 @@ function renderProjects() {
             break;
     }
 
-    // Calculate pagination values and slice project list accordingly
-    const totalItems = filteredProjects.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const start = (currentPage - 1) * itemsPerPage;
-    const paginatedItems = filteredProjects.slice(start, start + itemsPerPage);
 
-    // Display empty state message if no projects match the criteria
-    projectsContainer.innerHTML = "";
-
-    if (paginatedItems.length === 0) {
-        projectsContainer.innerHTML = `
-            <div class="empty-state">
-              <div class = "empty-icon">📂</div>
-                <h3>No projects found! </h3>
-                <p>Try adjusting your search or filter criteria</p>
-            </div>
-        `;
-        renderPagination(0);
-        return;
+    switch(currentSort){
+        case "az": filtered.sort((a,b)=>a.title.localeCompare(b.title)); break;
+        case "za": filtered.sort((a,b)=>b.title.localeCompare(a.title)); break;
+        case "newest": filtered.reverse(); break;
     }
 
-    // Render cards with stagger animation
-    paginatedItems.forEach((project, index) => {
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    const start = (currentPage-1)*itemsPerPage;
+    const paginated = filtered.slice(start, start+itemsPerPage);
+
+    // Empty state
+    if(paginated.length===0){
+        emptyState.style.display = "block";
+        projectsContainer.innerHTML = "";
+        paginationContainer.innerHTML = "";
+        return;
+    } else {
+        emptyState.style.display = "none";
+    }
+
+    // Render project cards
+    projectsContainer.innerHTML = "";
+    paginated.forEach(project=>{
         const card = document.createElement("a");
         card.href = project.link;
         card.className = "card";
         card.setAttribute("data-category", project.category);
+
+        card.innerHTML = `
+            <div class="card-cover" style="${project.coverStyle || ''}"><i class="${project.icon}"></i></div>
+
 
         // Cover style
         let coverAttr = "";
@@ -412,17 +470,18 @@ function renderProjects() {
                 <i class="${bookmarkIcon}"></i>
             </button>
             <div ${coverAttr}><i class="${project.icon}"></i></div>
+
             <div class="card-content">
                 <div class="card-header-flex">
                     <h3 class="card-heading">${project.title}</h3>
-                    <span class="category-tag">${capitalize(
-            project.category
-        )}</span>
+                    <span class="category-tag">${capitalize(project.category)}</span>
                 </div>
                 <p class="card-description">${project.description}</p>
-                <div class="card-tech">${techStackHtml}</div>
+                <div class="card-tech">${project.tech.map(t=>`<span>${t}</span>`).join('')}</div>
             </div>
         `;
+
+
 
         // Add bookmark button click handler
         const bookmarkBtn = card.querySelector('.bookmark-btn');
@@ -435,14 +494,10 @@ function renderProjects() {
         // Stagger animation
         card.style.opacity = "0";
         card.style.transform = "translateY(20px)";
-        projectsContainer.appendChild(card);
 
-        setTimeout(() => {
-            card.style.transition = "opacity 0.4s ease, transform 0.4s ease";
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
-        }, index * 50);
+        projectsContainer.appendChild(card);
     });
+
 
 
 /* =====================================================
@@ -528,6 +583,17 @@ function renderProjects() {
   });
 
   renderPagination(totalPages);
+
+    renderPagination(totalPages);
+}
+
+
+
+// Capitalize the first letter of a given string
+function capitalize(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+
 }
 
 
@@ -588,6 +654,7 @@ function showBookmarkToast(message) {
 }
 
 // ===============================
+
 // Pagination
 // ===============================
 
@@ -614,6 +681,29 @@ function scrollToProjects() {
 }
 
 
+// Pagination
+function renderPagination(totalPages){
+    paginationContainer.innerHTML = "";
+    if(totalPages <= 1) return;
+
+    for(let i=1;i<=totalPages;i++){
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.classList.toggle("active", i===currentPage);
+        btn.addEventListener("click", () => {
+            currentPage=i;
+            renderProjects();
+            window.scrollTo({top: document.getElementById("projects").offsetTop-80, behavior:"smooth"});
+        });
+        paginationContainer.appendChild(btn);
+    }
+}
+
+
+function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
+
+
+
 /* =====================================================
    FILTER / SEARCH / SORT EVENTS
 ===================================================== */
@@ -635,6 +725,7 @@ sortSelect?.addEventListener("change", () => {
   currentPage = 1;
   renderProjects();
 });
+
 
 filterBtns.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -691,24 +782,39 @@ async function fetchContributors() {
 
     if (!contributorsGrid) return;
 
+
+// Event listeners
+searchInput?.addEventListener("input", ()=>{ currentPage=1; renderProjects(); });
+sortSelect?.addEventListener("change", ()=>{ currentSort=sortSelect.value; currentPage=1; renderProjects(); });
+filterBtns.forEach(btn=>btn.addEventListener("click", ()=>{
+    filterBtns.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    currentCategory=btn.dataset.filter;
+    currentPage=1;
+    renderProjects();
+}));
+
+// ===============================
+// FETCH CONTRIBUTORS
+// ===============================
+const contributorsGrid = document.getElementById("contributors-grid");
+async function fetchContributors(){
+    if(!contributorsGrid) return;
+
     try {
-        const response = await fetch(
-            "https://api.github.com/repos/YadavAkhileshh/OpenPlayground/contributors"
-        );
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch contributors");
-        }
-
-        const contributors = await response.json();
-
-        // Update contributor count in hero
-        const contributorCount = document.getElementById("contributor-count");
-        if (contributorCount) {
-            contributorCount.textContent = `${contributors.length}+`;
-        }
-
+        const res = await fetch("https://api.github.com/repos/YadavAkhileshh/OpenPlayground/contributors");
+        const contributors = await res.json();
         contributorsGrid.innerHTML = "";
+
+        contributors.forEach((c,i)=>{
+            const card = document.createElement("a");
+            card.href = c.html_url;
+            card.target = "_blank";
+            card.className = "contributor-card";
+            card.innerHTML = `
+                <img src="${c.avatar_url}" alt="${c.login}" class="contributor-avatar" loading="lazy">
+                <span class="contributor-name">${c.login}</span>
+
 
         contributors.forEach((contributor, index) => {
             const card = document.createElement("div");
@@ -734,33 +840,15 @@ async function fetchContributors() {
                 <a href="${contributor.html_url}" target="_blank" rel="noopener noreferrer" class="contributor-github-link" aria-label="View ${contributor.login} on GitHub">
                     <i class="ri-github-fill"></i>
                 </a>
+
             `;
-
-            // Stagger animation
-            card.style.opacity = "0";
-            card.style.transform = "translateY(20px)";
             contributorsGrid.appendChild(card);
-
-            setTimeout(() => {
-                card.style.transition = "opacity 0.4s ease, transform 0.4s ease";
-                card.style.opacity = "1";
-                card.style.transform = "translateY(0)";
-            }, index * 30);
         });
-    } catch (error) {
-        // Show fallback message if contributors cannot be loaded
-        console.error("Error fetching contributors:", error);
-        contributorsGrid.innerHTML = `
-            <div class="loading-msg">
-                Unable to load contributors. 
-                <a href="https://github.com/YadavAkhileshh/OpenPlayground/graphs/contributors" 
-                   target="_blank" 
-                   style="color: var(--primary-500); text-decoration: underline;">
-                   View on GitHub
-                </a>
-            </div>
-        `;
+    } catch(err){
+        console.error("Failed to fetch contributors:", err);
+        contributorsGrid.innerHTML = `<p>Unable to load contributors.</p>`;
     }
+
 
 }
 
@@ -779,13 +867,41 @@ function escapeHtml(str = "") {
 document.addEventListener("DOMContentLoaded", () => {
   fetchProjects();
   fetchContributors();
+
+// ===============================
+// SMOOTH SCROLL ANCHORS
+// ===============================
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+    anchor.addEventListener("click", function(e){
+        const targetId = this.getAttribute("href");
+        if(targetId==="#") return;
+        const target = document.querySelector(targetId);
+        if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:"smooth", block:"start"});
+        }
+    });
+
 });
 
 
 
 // ===============================
-// Initialize
+// NAVBAR SCROLL SHADOW
 // ===============================
+
+const navbar = document.getElementById('navbar');
+window.addEventListener("scroll", ()=>{
+    navbar?.classList.toggle("scrolled", window.scrollY > 50);
+});
+
+// ===============================
+// INITIALIZATION
+// ===============================
+fetchProjects();
+fetchContributors();
+console.log("%c🚀 Contribute at https://github.com/YadavAkhileshh/OpenPlayground", "color:#6366f1;font-size:14px;font-weight:bold;");
+
 
 // Wait for all components to be loaded before initializing
 // The components.js dispatches a 'componentLoaded' event when each component is loaded
