@@ -15,7 +15,7 @@
   },
   {
     "title": "Mindful Breathing Exercise",
-    "category": "wellness",
+    "category": "productivity",
     "description": "Interactive breathing exercise interface with guided patterns, visual animations, and session tracking for relaxation and mindfulness.",
     "tech": [
       "HTML",
@@ -28,7 +28,7 @@
   },
   {
     "title": "False Choice Simulator",
-    "category": "psychology",
+    "category": "utility",
     "description": "Psychological experiment simulator demonstrating false choice scenarios and cognitive biases in decision-making.",
     "tech": [
         "HTML",
@@ -41,7 +41,7 @@
 },
   {
     "title": "Traffic Sign Memory Game",
-    "category": "Educational / Memory Game",
+    "category": "game",
     "description": "Interactive memory game where users match pairs of traffic signs to improve road safety knowledge and memory skills.",
     "tech": [
       "HTML",
@@ -54,7 +54,7 @@
   },
   {
     "title": "Interactive Road Safety Quiz",
-    "category": "education",
+    "category": "utility",
     "description": "An engaging quiz platform testing knowledge of road safety rules, traffic signs, and safe driving practices with multiple difficulty levels and instant feedback.",
     "tech": [
       "HTML",
@@ -106,7 +106,7 @@
   },
   {
     "title": "Notification Center",
-    "category": "ui",
+    "category": "utility",
     "description": "A modern notification center with filtering, sorting, and bulk actions for managing alerts and system messages.",
     "tech": [
       "HTML",
@@ -771,7 +771,7 @@
   },
   {
     "title": "Habit Tracker",
-    "category": "utility",
+    "category": "productivity",
     "description": "Track your daily habits and streaks.",
     "tech": [
       "HTML",
@@ -1108,6 +1108,20 @@
     "icon": "ri-user-line",
     "coverStyle": "background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); color: #7c2d12;"
   },
+
+  {
+    "title": "Truth or Dare",
+    "category": "game",
+    "description": "Fun party game with random truth questions and dares.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/truth-or-dare/index.html",
+    "icon": "ri-keyboard-line",
+    "coverClass": "truth-or-dare-cover"
+  },
   {
     "title": "Hangman Game",
     "category": "game",
@@ -1381,7 +1395,7 @@
   },
   {
     "title": "Medicine Reminder App",
-    "category": "utility",
+    "category": "productivity",
     "description": "Set and manage medicine reminders with notifications.",
     "tech": [
       "HTML",
@@ -1421,7 +1435,7 @@
   },
   {
     "title": "Online Food Delivery App",
-    "category": "utility",
+    "category": "productivity",
     "description": "Responsive food ordering UI with cart functionality",
     "tech": [
       "HTML",
