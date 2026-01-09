@@ -1,5 +1,18 @@
 [
   {
+    "title": "Mindful Breathing Exercise",
+    "category": "wellness",
+    "description": "Interactive breathing exercise interface with guided patterns, visual animations, and session tracking for relaxation and mindfulness.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/breathing-exercise/index.html",
+    "icon": "ri-heart-pulse-line",
+    "coverClass": "breathing-exercise-cover"
+  },
+  {
     "title": "False Choice Simulator",
     "category": "psychology",
     "description": "Psychological experiment simulator demonstrating false choice scenarios and cognitive biases in decision-making.",
