@@ -1519,5 +1519,19 @@
   "link": "./projects/github-user-finder/index.html",
   "icon": "ri-github-fill",
   "coverClass": "background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: #ffffff;"
-  } 
+  },
+  
+  {
+    "title": "Drawing Canvas",
+    "category": "utility",
+    "description": "A simple interactive canvas that lets users draw freely with adjustable brush size and color.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/Canvas/index.html",
+    "icon": "ri-brush-line",
+    "coverClass": "drawing-canvas-cover"
+  }
 ]
