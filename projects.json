@@ -1023,7 +1023,7 @@
       "CSS",
       "JS"
     ],
-    "link": "./projects/memory-game/index.html",
+    "link": "./projects/memory-flip-game/index.html",
     "icon": "ri-brain-line",
     "coverStyle": "background: #7c3aed; color: white;"
   },
