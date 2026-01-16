@@ -336,6 +336,19 @@
     "icon": "ri-focus-line",
     "coverStyle": "background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;"
   },
+   {
+    "title": "Ultimate Ride ",
+    "category": "game",
+    "description": "A fast-paced racing game with neon visuals and challenging tracks.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/ultimate-ride/index.html",
+    "icon": "ri-car-line",
+    "coverStyle": "background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;"
+  },
   {
     "title": "Quiz Game",
     "category": "puzzle",
