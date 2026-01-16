@@ -2870,9 +2870,9 @@
     "coverStyle": "background: linear-gradient(135deg, #ff7043 0%, #ffab91 100%); color: white;"
   },
   {
-    "title": "Simon Game",
+    "title": "Simon Says Game",
     "category": "game",
-    "description": "Classic Simon Says memory game with color sequences and increasing difficulty levels.",
+    "description": "Classic Simon Says memory game with smooth sound effects, circular design, and high score tracking.",
     "tech": [
       "HTML",
       "CSS",
@@ -2880,7 +2880,7 @@
     ],
     "link": "./projects/simon-game/index.html",
     "icon": "ri-record-circle-line",
-    "coverStyle": "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"
+    "coverStyle": "background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;"
   },
   {
     "title": "Solar System Simulation",
