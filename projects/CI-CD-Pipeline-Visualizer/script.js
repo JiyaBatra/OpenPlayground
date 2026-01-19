@@ -1094,7 +1094,29 @@ class PipelineExecutor {
 
     async executeJobsParallel(stage) {
         const jobPromises = stage.jobs.map(job => this.executeJob(stage, job));
-        await Promise.all(jobPromises);
+
+        // Allow early exit when the pipeline is paused or stopped, so we don't
+        // wait indefinitely on Promise.all while jobs are being cancelled.
+        let cancelled = false;
+        const cancellationPromise = new Promise(resolve => {
+            const checkAndResolve = () => {
+                if (cancelled) {
+                    return;
+                }
+                if (!this.state.isRunning || this.state.isPaused) {
+                    cancelled = true;
+                    resolve();
+                    return;
+                }
+                setTimeout(checkAndResolve, 50);
+            };
+            checkAndResolve();
+        });
+
+        await Promise.race([
+            Promise.all(jobPromises),
+            cancellationPromise
+        ]);
     }
 
     async executeJobsSequential(stage) {
