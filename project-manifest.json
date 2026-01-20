@@ -1297,6 +1297,11 @@
       "folder": "evoshapes",
       "path": "./projects/evoshapes/project.json",
       "link": "./projects/evoshapes/index.html"
+    },
+    {
+      "folder": "synthetic-exchange",
+      "path": "./projects/synthetic-exchange/project.json",
+      "link": "./projects/synthetic-exchange/index.html"
     }
 
   ]
