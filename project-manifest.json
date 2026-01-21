@@ -14,6 +14,11 @@
       "link": "./projects/Retro-StyleLinuxCommand/index.html"
     },
     {
+      "folder": "CursorPhysics",
+      "path": "./projects/CursorPhysics/project.json",
+      "link": "./projects/CursorPhysics/index.html"
+    },
+    {
       "folder": "RetroTerminalUI",
       "path": "./projects/RetroTerminalUI/project.json",
       "link": "./projects/RetroTerminalUI/index.html"
