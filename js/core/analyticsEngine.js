@@ -1,534 +1,609 @@
-/**
- * Analytics Engine - Tracks user learning journey and project exploration
- * Privacy-first: All data stored locally in localStorage
- */
+// ===============================
+// Analytics Engine for OpenPlayground
+// Local telemetry tracking for project interactions
+// Feature #1291: Advanced Project Analytics & Local Trending Engine
+// ===============================
 
 class AnalyticsEngine {
     constructor() {
-        this.storageKey = 'openPlaygroundAnalytics';
-        this.data = this.loadData();
-        this.sessionStart = Date.now();
-        this.currentProject = null;
-
-        // Achievement definitions
-        this.achievements = {
-            first_view: {
-                id: 'first_view',
-                name: 'First Steps',
-                description: 'View your first project',
-                icon: '🎯',
-                condition: (stats) => stats.totalProjectsViewed >= 1
+        this.storageKey = 'project_analytics';
+        this.sessionKey = 'analytics_session';
+        this.trendingCacheKey = 'trending_cache';
+        this.data = this.loadFromStorage();
+        this.sessionData = this.loadSessionData();
+        this.trendingCache = null;
+        this.trendingCacheExpiry = 5 * 60 * 1000; // 5 minutes cache
+        
+        // Configuration for trending algorithm
+        this.config = {
+            // Time decay factor (older interactions worth less)
+            decayHalfLife: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+            // Weights for different interaction types
+            weights: {
+                click: 1,
+                view: 0.5,
+                timeSpent: 0.1, // per second
+                bookmark: 3,
+                share: 2
             },
-            explorer_10: {
-                id: 'explorer_10',
-                name: 'Explorer',
-                description: 'View 10 different projects',
-                icon: '🔍',
-                condition: (stats) => stats.totalProjectsViewed >= 10
-            },
-            explorer_25: {
-                id: 'explorer_25',
-                name: 'Adventurer',
-                description: 'View 25 different projects',
-                icon: '🗺️',
-                condition: (stats) => stats.totalProjectsViewed >= 25
-            },
-            explorer_50: {
-                id: 'explorer_50',
-                name: 'Voyager',
-                description: 'View 50 different projects',
-                icon: '🚀',
-                condition: (stats) => stats.totalProjectsViewed >= 50
-            },
-            category_master: {
-                id: 'category_master',
-                name: 'Category Master',
-                description: 'Explore all project categories',
-                icon: '👑',
-                condition: (stats) => stats.categoriesExplored >= 6
-            },
-            streak_3: {
-                id: 'streak_3',
-                name: 'Getting Started',
-                description: 'Maintain a 3-day streak',
-                icon: '🔥',
-                condition: (stats) => stats.currentStreak >= 3
-            },
-            streak_7: {
-                id: 'streak_7',
-                name: 'Week Warrior',
-                description: 'Maintain a 7-day streak',
-                icon: '⚡',
-                condition: (stats) => stats.currentStreak >= 7
-            },
-            streak_30: {
-                id: 'streak_30',
-                name: 'Monthly Master',
-                description: 'Maintain a 30-day streak',
-                icon: '🏆',
-                condition: (stats) => stats.currentStreak >= 30
-            },
-            bookworm: {
-                id: 'bookworm',
-                name: 'Bookworm',
-                description: 'Bookmark 10 projects',
-                icon: '📚',
-                condition: (stats) => stats.totalBookmarks >= 10
-            },
-            night_owl: {
-                id: 'night_owl',
-                name: 'Night Owl',
-                description: 'Explore projects after midnight',
-                icon: '🦉',
-                condition: (stats) => stats.nightOwlSession
-            },
-            early_bird: {
-                id: 'early_bird',
-                name: 'Early Bird',
-                description: 'Explore projects before 6 AM',
-                icon: '🐦',
-                condition: (stats) => stats.earlyBirdSession
-            },
-            game_lover: {
-                id: 'game_lover',
-                name: 'Game Lover',
-                description: 'View 10 game projects',
-                icon: '🎮',
-                condition: (stats) => (stats.categoryViews?.game || 0) >= 10
-            },
-            utility_expert: {
-                id: 'utility_expert',
-                name: 'Utility Expert',
-                description: 'View 10 utility projects',
-                icon: '🛠️',
-                condition: (stats) => (stats.categoryViews?.utility || 0) >= 10
-            }
+            // Minimum interactions to be considered for trending
+            minInteractions: 2,
+            // Hidden gem threshold (high quality, low visibility)
+            hiddenGemMinScore: 5,
+            hiddenGemMaxViews: 10
         };
-
-        this.init();
+        
+        this.initializeSessionTracking();
     }
 
-    init() {
-        this.updateStreak();
-        this.checkTimeBasedAchievements();
-        this.startSessionTracking();
-    }
-
-    loadData() {
-        try {
-            const stored = localStorage.getItem(this.storageKey);
-            if (stored) {
-                return JSON.parse(stored);
-            }
-        } catch (e) {
-            console.error('Failed to load analytics data:', e);
-        }
-
-        return this.getDefaultData();
-    }
-
-    getDefaultData() {
+    // ===============================
+    // Data Structure
+    // ===============================
+    
+    getDefaultProjectData() {
         return {
-            // Core stats
-            totalProjectsViewed: 0,
-            uniqueProjectsViewed: [],
-            categoryViews: {},
-            totalTimeSpent: 0, // in minutes
-            
-            // Streak tracking
-            currentStreak: 0,
-            longestStreak: 0,
-            lastVisitDate: null,
-            visitDates: [],
-            
-            // Achievements
-            unlockedAchievements: [],
-            
-            // Goals
-            goals: [],
-            
-            // Bookmarks count
-            totalBookmarks: 0,
-            
-            // Time-based
-            nightOwlSession: false,
-            earlyBirdSession: false,
-            
-            // Weekly data
-            weeklyActivity: {},
-            
-            // Project history with timestamps
-            viewHistory: [],
-            
-            // Learning path
-            learningPath: [],
-            
-            // First visit
-            firstVisit: new Date().toISOString(),
-            
-            // Preferences for recommendations
-            preferredCategories: []
+            clicks: 0,
+            views: 0,
+            totalTimeSpent: 0, // in seconds
+            bookmarks: 0,
+            shares: 0,
+            lastInteraction: null,
+            firstInteraction: null,
+            sessions: [], // Array of session timestamps
+            dailyStats: {} // { 'YYYY-MM-DD': { clicks, views, timeSpent } }
         };
     }
 
-    saveData() {
-        try {
-            localStorage.setItem(this.storageKey, JSON.stringify(this.data));
-        } catch (e) {
-            console.error('Failed to save analytics data:', e);
+    // ===============================
+    // Core Tracking Methods
+    // ===============================
+
+    /**
+     * Track a project click (opening a project)
+     */
+    trackClick(projectId, metadata = {}) {
+        this.ensureProjectExists(projectId);
+        const now = Date.now();
+        
+        this.data[projectId].clicks++;
+        this.data[projectId].lastInteraction = now;
+        if (!this.data[projectId].firstInteraction) {
+            this.data[projectId].firstInteraction = now;
         }
+        this.data[projectId].sessions.push(now);
+        
+        // Update daily stats
+        this.updateDailyStats(projectId, 'clicks', 1);
+        
+        // Start time tracking for this project
+        this.startTimeTracking(projectId);
+        
+        this.saveToStorage();
+        this.invalidateTrendingCache();
+        
+        console.log(`📊 Analytics: Click tracked for ${projectId}`);
+        
+        return this.getProjectStats(projectId);
     }
 
-    // Track project view
-    trackProjectView(project) {
-        if (!project || !project.title) return;
+    /**
+     * Track a project view (card visible in viewport)
+     */
+    trackView(projectId) {
+        this.ensureProjectExists(projectId);
+        const now = Date.now();
+        
+        // Debounce views - only count once per session
+        const lastView = this.sessionData.viewedProjects?.[projectId];
+        if (lastView && (now - lastView) < 60000) { // 1 minute debounce
+            return;
+        }
+        
+        this.data[projectId].views++;
+        this.data[projectId].lastInteraction = now;
+        if (!this.data[projectId].firstInteraction) {
+            this.data[projectId].firstInteraction = now;
+        }
+        
+        // Track in session
+        if (!this.sessionData.viewedProjects) {
+            this.sessionData.viewedProjects = {};
+        }
+        this.sessionData.viewedProjects[projectId] = now;
+        
+        this.updateDailyStats(projectId, 'views', 1);
+        this.saveToStorage();
+        this.saveSessionData();
+    }
+
+    /**
+     * Track time spent on a project
+     */
+    trackTimeSpent(projectId, seconds) {
+        if (seconds <= 0) return;
+        
+        this.ensureProjectExists(projectId);
+        this.data[projectId].totalTimeSpent += seconds;
+        this.updateDailyStats(projectId, 'timeSpent', seconds);
+        this.saveToStorage();
+        this.invalidateTrendingCache();
+    }
+
+    /**
+     * Track bookmark action
+     */
+    trackBookmark(projectId, isAdding = true) {
+        this.ensureProjectExists(projectId);
+        if (isAdding) {
+            this.data[projectId].bookmarks++;
+        }
+        this.data[projectId].lastInteraction = Date.now();
+        this.saveToStorage();
+        this.invalidateTrendingCache();
+    }
+
+    /**
+     * Track share action
+     */
+    trackShare(projectId) {
+        this.ensureProjectExists(projectId);
+        this.data[projectId].shares++;
+        this.data[projectId].lastInteraction = Date.now();
+        this.saveToStorage();
+        this.invalidateTrendingCache();
+    }
+
+    // ===============================
+    // Time Tracking
+    // ===============================
+
+    startTimeTracking(projectId) {
+        // Stop any existing tracking
+        this.stopTimeTracking();
+        
+        this.sessionData.currentProject = projectId;
+        this.sessionData.trackingStartTime = Date.now();
+        this.saveSessionData();
+    }
+
+    stopTimeTracking() {
+        if (this.sessionData.currentProject && this.sessionData.trackingStartTime) {
+            const elapsed = Math.floor((Date.now() - this.sessionData.trackingStartTime) / 1000);
+            if (elapsed > 0 && elapsed < 3600) { // Max 1 hour per session
+                this.trackTimeSpent(this.sessionData.currentProject, elapsed);
+            }
+        }
+        
+        this.sessionData.currentProject = null;
+        this.sessionData.trackingStartTime = null;
+        this.saveSessionData();
+    }
+
+    // ===============================
+    // Trending Algorithm
+    // ===============================
+
+    /**
+     * Calculate popularity score for a project with time decay
+     */
+    calculatePopularityScore(projectId) {
+        const data = this.data[projectId];
+        if (!data) return 0;
+
+        const now = Date.now();
+        const { weights, decayHalfLife } = this.config;
+        
+        // Calculate base score from interactions
+        let baseScore = 0;
+        baseScore += data.clicks * weights.click;
+        baseScore += data.views * weights.view;
+        baseScore += data.totalTimeSpent * weights.timeSpent;
+        baseScore += data.bookmarks * weights.bookmark;
+        baseScore += data.shares * weights.share;
+        
+        // Apply time decay based on last interaction
+        if (data.lastInteraction) {
+            const age = now - data.lastInteraction;
+            const decayFactor = Math.pow(0.5, age / decayHalfLife);
+            baseScore *= decayFactor;
+        }
+        
+        // Boost recent activity (last 24 hours)
+        const recentScore = this.getRecentActivityScore(projectId, 24);
+        baseScore += recentScore * 2; // Double weight for recent activity
+        
+        return Math.round(baseScore * 100) / 100;
+    }
+
+    /**
+     * Get activity score for the last N hours
+     */
+    getRecentActivityScore(projectId, hours = 24) {
+        const data = this.data[projectId];
+        if (!data || !data.dailyStats) return 0;
 
         const now = new Date();
-        const category = (project.category || 'other').toLowerCase();
+        const cutoff = now.getTime() - (hours * 60 * 60 * 1000);
+        let score = 0;
 
-        // Update total views
-        this.data.totalProjectsViewed++;
+        // Check today and yesterday
+        const dates = [
+            this.formatDate(now),
+            this.formatDate(new Date(now.getTime() - 24 * 60 * 60 * 1000))
+        ];
 
-        // Track unique projects
-        if (!this.data.uniqueProjectsViewed.includes(project.title)) {
-            this.data.uniqueProjectsViewed.push(project.title);
-        }
-
-        // Update category views
-        this.data.categoryViews[category] = (this.data.categoryViews[category] || 0) + 1;
-
-        // Add to view history
-        this.data.viewHistory.push({
-            title: project.title,
-            category: category,
-            timestamp: now.toISOString(),
-            link: project.link
+        dates.forEach(date => {
+            const dayStats = data.dailyStats[date];
+            if (dayStats) {
+                score += (dayStats.clicks || 0) * this.config.weights.click;
+                score += (dayStats.views || 0) * this.config.weights.view;
+                score += (dayStats.timeSpent || 0) * this.config.weights.timeSpent;
+            }
         });
 
-        // Keep only last 100 entries
-        if (this.data.viewHistory.length > 100) {
-            this.data.viewHistory = this.data.viewHistory.slice(-100);
-        }
-
-        // Update learning path
-        this.updateLearningPath(project, category);
-
-        // Update weekly activity
-        const weekKey = this.getWeekKey(now);
-        if (!this.data.weeklyActivity[weekKey]) {
-            this.data.weeklyActivity[weekKey] = { views: 0, categories: [], projects: [] };
-        }
-        this.data.weeklyActivity[weekKey].views++;
-        if (!this.data.weeklyActivity[weekKey].categories.includes(category)) {
-            this.data.weeklyActivity[weekKey].categories.push(category);
-        }
-        if (!this.data.weeklyActivity[weekKey].projects.includes(project.title)) {
-            this.data.weeklyActivity[weekKey].projects.push(project.title);
-        }
-
-        // Update preferred categories
-        this.updatePreferredCategories();
-
-        // Check achievements
-        this.checkAchievements();
-
-        this.saveData();
+        return score;
     }
 
-    updateLearningPath(project, category) {
-        const entry = {
-            title: project.title,
-            category: category,
-            date: new Date().toISOString().split('T')[0]
+    /**
+     * Get trending projects sorted by popularity
+     */
+    getTrendingProjects(limit = 10) {
+        // Check cache
+        if (this.trendingCache && this.trendingCache.expiry > Date.now()) {
+            return this.trendingCache.data.slice(0, limit);
+        }
+
+        const projectScores = [];
+        
+        for (const projectId in this.data) {
+            const data = this.data[projectId];
+            const totalInteractions = data.clicks + data.views;
+            
+            if (totalInteractions >= this.config.minInteractions) {
+                projectScores.push({
+                    projectId,
+                    score: this.calculatePopularityScore(projectId),
+                    clicks: data.clicks,
+                    views: data.views,
+                    timeSpent: data.totalTimeSpent,
+                    bookmarks: data.bookmarks
+                });
+            }
+        }
+
+        // Sort by score descending
+        projectScores.sort((a, b) => b.score - a.score);
+        
+        // Cache results
+        this.trendingCache = {
+            data: projectScores,
+            expiry: Date.now() + this.trendingCacheExpiry
         };
-
-        // Don't add duplicate consecutive entries
-        const lastEntry = this.data.learningPath[this.data.learningPath.length - 1];
-        if (!lastEntry || lastEntry.title !== project.title) {
-            this.data.learningPath.push(entry);
-        }
-
-        // Keep last 50 entries
-        if (this.data.learningPath.length > 50) {
-            this.data.learningPath = this.data.learningPath.slice(-50);
-        }
+        
+        return projectScores.slice(0, limit);
     }
 
-    updatePreferredCategories() {
-        const categoryEntries = Object.entries(this.data.categoryViews);
-        categoryEntries.sort((a, b) => b[1] - a[1]);
-        this.data.preferredCategories = categoryEntries.slice(0, 3).map(e => e[0]);
-    }
-
-    // Streak management
-    updateStreak() {
-        const today = new Date().toISOString().split('T')[0];
-        const lastVisit = this.data.lastVisitDate;
-
-        if (!lastVisit) {
-            // First visit
-            this.data.currentStreak = 1;
-            this.data.lastVisitDate = today;
-            this.data.visitDates.push(today);
-        } else if (lastVisit === today) {
-            // Already visited today
-            return;
-        } else {
-            const lastDate = new Date(lastVisit);
-            const todayDate = new Date(today);
-            const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
-
-            if (diffDays === 1) {
-                // Consecutive day
-                this.data.currentStreak++;
-            } else {
-                // Streak broken
-                this.data.currentStreak = 1;
-            }
-
-            this.data.lastVisitDate = today;
-            if (!this.data.visitDates.includes(today)) {
-                this.data.visitDates.push(today);
+    /**
+     * Get hidden gem projects (high quality, low visibility)
+     */
+    getHiddenGems(limit = 5) {
+        const gems = [];
+        
+        for (const projectId in this.data) {
+            const data = this.data[projectId];
+            const score = this.calculatePopularityScore(projectId);
+            
+            // Hidden gem criteria: decent engagement but few views
+            if (score >= this.config.hiddenGemMinScore && 
+                data.views <= this.config.hiddenGemMaxViews) {
+                gems.push({
+                    projectId,
+                    score,
+                    views: data.views,
+                    clicks: data.clicks,
+                    avgTimeSpent: data.clicks > 0 ? data.totalTimeSpent / data.clicks : 0
+                });
             }
         }
 
-        // Update longest streak
-        if (this.data.currentStreak > this.data.longestStreak) {
-            this.data.longestStreak = this.data.currentStreak;
-        }
-
-        this.saveData();
+        // Sort by score descending
+        gems.sort((a, b) => b.score - a.score);
+        
+        return gems.slice(0, limit);
     }
 
-    checkTimeBasedAchievements() {
-        const hour = new Date().getHours();
-
-        if (hour >= 0 && hour < 5) {
-            this.data.nightOwlSession = true;
-        }
-
-        if (hour >= 4 && hour < 6) {
-            this.data.earlyBirdSession = true;
-        }
-
-        this.saveData();
+    /**
+     * Check if a project is trending
+     */
+    isTrending(projectId, topN = 10) {
+        const trending = this.getTrendingProjects(topN);
+        return trending.some(t => t.projectId === projectId);
     }
 
-    startSessionTracking() {
-        // Track time spent
-        setInterval(() => {
-            this.data.totalTimeSpent += 1; // Add 1 minute
-            this.saveData();
-        }, 60000); // Every minute
+    /**
+     * Check if a project is a hidden gem
+     */
+    isHiddenGem(projectId) {
+        const gems = this.getHiddenGems(10);
+        return gems.some(g => g.projectId === projectId);
     }
 
-    // Check and unlock achievements
-    checkAchievements() {
-        const stats = this.getStats();
+    /**
+     * Get badge type for a project
+     */
+    getProjectBadge(projectId) {
+        if (this.isTrending(projectId, 5)) {
+            return { type: 'trending', label: '🔥 Trending', class: 'badge-trending' };
+        }
+        if (this.isHiddenGem(projectId)) {
+            return { type: 'hidden-gem', label: '💎 Hidden Gem', class: 'badge-hidden-gem' };
+        }
+        return null;
+    }
 
-        Object.values(this.achievements).forEach(achievement => {
-            if (!this.data.unlockedAchievements.includes(achievement.id)) {
-                if (achievement.condition(stats)) {
-                    this.unlockAchievement(achievement);
+    // ===============================
+    // Statistics & Reports
+    // ===============================
+
+    /**
+     * Get stats for a specific project
+     */
+    getProjectStats(projectId) {
+        const data = this.data[projectId];
+        if (!data) return null;
+
+        return {
+            projectId,
+            clicks: data.clicks,
+            views: data.views,
+            totalTimeSpent: data.totalTimeSpent,
+            avgTimeSpent: data.clicks > 0 ? Math.round(data.totalTimeSpent / data.clicks) : 0,
+            bookmarks: data.bookmarks,
+            shares: data.shares,
+            lastInteraction: data.lastInteraction,
+            firstInteraction: data.firstInteraction,
+            popularityScore: this.calculatePopularityScore(projectId),
+            badge: this.getProjectBadge(projectId)
+        };
+    }
+
+    /**
+     * Get user activity summary
+     */
+    getUserActivitySummary() {
+        let totalClicks = 0;
+        let totalViews = 0;
+        let totalTimeSpent = 0;
+        let uniqueProjects = 0;
+        const categoryStats = {};
+
+        for (const projectId in this.data) {
+            const data = this.data[projectId];
+            totalClicks += data.clicks;
+            totalViews += data.views;
+            totalTimeSpent += data.totalTimeSpent;
+            if (data.clicks > 0 || data.views > 0) {
+                uniqueProjects++;
+            }
+        }
+
+        // Get most visited projects
+        const mostVisited = Object.entries(this.data)
+            .map(([id, data]) => ({ projectId: id, clicks: data.clicks, timeSpent: data.totalTimeSpent }))
+            .filter(p => p.clicks > 0)
+            .sort((a, b) => b.clicks - a.clicks)
+            .slice(0, 5);
+
+        return {
+            totalClicks,
+            totalViews,
+            totalTimeSpent,
+            uniqueProjects,
+            mostVisited,
+            averageTimePerProject: uniqueProjects > 0 ? Math.round(totalTimeSpent / uniqueProjects) : 0
+        };
+    }
+
+    /**
+     * Get activity for a date range
+     */
+    getActivityByDateRange(startDate, endDate) {
+        const activity = {};
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            const dateStr = this.formatDate(d);
+            activity[dateStr] = { clicks: 0, views: 0, timeSpent: 0 };
+
+            for (const projectId in this.data) {
+                const dayStats = this.data[projectId].dailyStats?.[dateStr];
+                if (dayStats) {
+                    activity[dateStr].clicks += dayStats.clicks || 0;
+                    activity[dateStr].views += dayStats.views || 0;
+                    activity[dateStr].timeSpent += dayStats.timeSpent || 0;
                 }
             }
-        });
+        }
+
+        return activity;
     }
 
-    unlockAchievement(achievement) {
-        this.data.unlockedAchievements.push(achievement.id);
-        this.saveData();
+    /**
+     * Get category engagement stats
+     */
+    getCategoryEngagement(projectsData) {
+        const categoryStats = {};
 
-        // Show notification
-        this.showAchievementNotification(achievement);
-    }
-
-    showAchievementNotification(achievement) {
-        const notification = document.createElement('div');
-        notification.className = 'achievement-notification';
-        notification.innerHTML = `
-            <div class="achievement-icon">${achievement.icon}</div>
-            <div class="achievement-content">
-                <div class="achievement-title">Achievement Unlocked!</div>
-                <div class="achievement-name">${achievement.name}</div>
-                <div class="achievement-desc">${achievement.description}</div>
-            </div>
-        `;
-        document.body.appendChild(notification);
-
-        setTimeout(() => notification.classList.add('show'), 100);
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
-        }, 4000);
-    }
-
-    // Get computed stats
-    getStats() {
-        return {
-            totalProjectsViewed: this.data.totalProjectsViewed,
-            uniqueProjects: this.data.uniqueProjectsViewed.length,
-            categoriesExplored: Object.keys(this.data.categoryViews).length,
-            categoryViews: this.data.categoryViews,
-            totalTimeSpent: this.data.totalTimeSpent,
-            currentStreak: this.data.currentStreak,
-            longestStreak: this.data.longestStreak,
-            totalBookmarks: this.data.totalBookmarks,
-            nightOwlSession: this.data.nightOwlSession,
-            earlyBirdSession: this.data.earlyBirdSession,
-            unlockedAchievements: this.data.unlockedAchievements,
-            preferredCategories: this.data.preferredCategories,
-            learningPath: this.data.learningPath,
-            viewHistory: this.data.viewHistory,
-            weeklyActivity: this.data.weeklyActivity,
-            goals: this.data.goals,
-            visitDates: this.data.visitDates,
-            firstVisit: this.data.firstVisit
-        };
-    }
-
-    // Goals management
-    addGoal(goal) {
-        const newGoal = {
-            id: Date.now(),
-            text: goal.text,
-            target: goal.target || 5,
-            category: goal.category || null,
-            progress: 0,
-            createdAt: new Date().toISOString(),
-            deadline: goal.deadline || null,
-            completed: false
-        };
-
-        this.data.goals.push(newGoal);
-        this.saveData();
-        return newGoal;
-    }
-
-    updateGoalProgress(goalId, progress) {
-        const goal = this.data.goals.find(g => g.id === goalId);
-        if (goal) {
-            goal.progress = progress;
-            if (progress >= goal.target) {
-                goal.completed = true;
+        for (const projectId in this.data) {
+            const project = projectsData?.find(p => p.name === projectId || p.folder === projectId);
+            if (project && project.category) {
+                if (!categoryStats[project.category]) {
+                    categoryStats[project.category] = {
+                        clicks: 0,
+                        views: 0,
+                        timeSpent: 0,
+                        projects: 0
+                    };
+                }
+                categoryStats[project.category].clicks += this.data[projectId].clicks;
+                categoryStats[project.category].views += this.data[projectId].views;
+                categoryStats[project.category].timeSpent += this.data[projectId].totalTimeSpent;
+                categoryStats[project.category].projects++;
             }
-            this.saveData();
+        }
+
+        return categoryStats;
+    }
+
+    // ===============================
+    // Helper Methods
+    // ===============================
+
+    ensureProjectExists(projectId) {
+        if (!this.data[projectId]) {
+            this.data[projectId] = this.getDefaultProjectData();
         }
     }
 
-    deleteGoal(goalId) {
-        this.data.goals = this.data.goals.filter(g => g.id !== goalId);
-        this.saveData();
+    updateDailyStats(projectId, metric, value) {
+        const today = this.formatDate(new Date());
+        if (!this.data[projectId].dailyStats) {
+            this.data[projectId].dailyStats = {};
+        }
+        if (!this.data[projectId].dailyStats[today]) {
+            this.data[projectId].dailyStats[today] = { clicks: 0, views: 0, timeSpent: 0 };
+        }
+        this.data[projectId].dailyStats[today][metric] += value;
     }
 
-    // Update bookmark count
-    updateBookmarkCount(count) {
-        this.data.totalBookmarks = count;
-        this.checkAchievements();
-        this.saveData();
+    formatDate(date) {
+        return date.toISOString().split('T')[0];
     }
 
-    // Get recommendations based on user preferences
-    getRecommendations(allProjects) {
-        if (!allProjects || allProjects.length === 0) return [];
+    invalidateTrendingCache() {
+        this.trendingCache = null;
+    }
 
-        const viewedTitles = new Set(this.data.uniqueProjectsViewed);
-        const preferredCategories = this.data.preferredCategories;
+    // ===============================
+    // Session Management
+    // ===============================
 
-        // Filter out already viewed projects
-        let candidates = allProjects.filter(p => !viewedTitles.has(p.title));
+    initializeSessionTracking() {
+        // Stop time tracking when page unloads
+        window.addEventListener('beforeunload', () => {
+            this.stopTimeTracking();
+        });
 
-        // Score projects based on category preference
-        const scored = candidates.map(project => {
-            const category = (project.category || 'other').toLowerCase();
-            let score = 0;
-
-            // Prefer categories user has explored
-            const prefIndex = preferredCategories.indexOf(category);
-            if (prefIndex !== -1) {
-                score += (3 - prefIndex) * 10; // Higher score for top preferences
+        // Also stop when visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.stopTimeTracking();
             }
-
-            // Add some randomness
-            score += Math.random() * 5;
-
-            return { project, score };
         });
-
-        // Sort by score and return top 6
-        scored.sort((a, b) => b.score - a.score);
-        return scored.slice(0, 6).map(s => s.project);
     }
 
-    // Get category distribution for radar chart
-    getCategoryDistribution() {
-        const categories = ['game', 'utility', 'animation', 'education', 'productivity', 'other'];
-        const distribution = {};
-
-        categories.forEach(cat => {
-            distribution[cat] = this.data.categoryViews[cat] || 0;
-        });
-
-        return distribution;
+    loadSessionData() {
+        try {
+            const saved = sessionStorage.getItem(this.sessionKey);
+            return saved ? JSON.parse(saved) : { viewedProjects: {} };
+        } catch (error) {
+            console.error('Failed to load session data:', error);
+            return { viewedProjects: {} };
+        }
     }
 
-    // Get weekly summary
-    getWeeklySummary() {
-        const weekKey = this.getWeekKey(new Date());
-        const weekData = this.data.weeklyActivity[weekKey] || { views: 0, categories: [], projects: [] };
-
-        return {
-            projectsViewed: weekData.views,
-            categoriesExplored: weekData.categories.length,
-            uniqueProjects: weekData.projects.length,
-            topCategory: this.getTopCategory(weekData.categories)
-        };
+    saveSessionData() {
+        try {
+            sessionStorage.setItem(this.sessionKey, JSON.stringify(this.sessionData));
+        } catch (error) {
+            console.error('Failed to save session data:', error);
+        }
     }
 
-    getWeekKey(date) {
-        const startOfYear = new Date(date.getFullYear(), 0, 1);
-        const weekNumber = Math.ceil(((date - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
-        return `${date.getFullYear()}-W${weekNumber}`;
+    // ===============================
+    // Storage
+    // ===============================
+
+    loadFromStorage() {
+        try {
+            const saved = localStorage.getItem(this.storageKey);
+            return saved ? JSON.parse(saved) : {};
+        } catch (error) {
+            console.error('Failed to load analytics data:', error);
+            return {};
+        }
     }
 
-    getTopCategory(categories) {
-        if (!categories || categories.length === 0) return null;
-
-        const counts = {};
-        categories.forEach(cat => {
-            counts[cat] = (counts[cat] || 0) + 1;
-        });
-
-        return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
+    saveToStorage() {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(this.data));
+        } catch (error) {
+            console.error('Failed to save analytics data:', error);
+        }
     }
 
-    // Format time
-    formatTime(minutes) {
-        if (minutes < 60) return `${minutes}m`;
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-        return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
-    }
-
-    // Export data for report
+    /**
+     * Export analytics data
+     */
     exportData() {
         return {
-            stats: this.getStats(),
-            achievements: this.data.unlockedAchievements.map(id => this.achievements[id]),
-            weeklyActivity: this.data.weeklyActivity,
-            learningPath: this.data.learningPath,
-            goals: this.data.goals,
-            exportDate: new Date().toISOString()
+            version: '1.0',
+            exportedAt: new Date().toISOString(),
+            data: this.data,
+            summary: this.getUserActivitySummary()
         };
     }
 
-    // Reset all data
-    resetData() {
-        this.data = this.getDefaultData();
-        this.saveData();
+    /**
+     * Clear all analytics data
+     */
+    clearAllData() {
+        this.data = {};
+        this.sessionData = { viewedProjects: {} };
+        this.trendingCache = null;
+        this.saveToStorage();
+        this.saveSessionData();
+        console.log('📊 Analytics: All data cleared');
+    }
+
+    /**
+     * Prune old data (older than specified days)
+     */
+    pruneOldData(daysToKeep = 90) {
+        const cutoff = Date.now() - (daysToKeep * 24 * 60 * 60 * 1000);
+        let pruned = 0;
+
+        for (const projectId in this.data) {
+            const data = this.data[projectId];
+            
+            // Prune old daily stats
+            if (data.dailyStats) {
+                for (const date in data.dailyStats) {
+                    if (new Date(date).getTime() < cutoff) {
+                        delete data.dailyStats[date];
+                        pruned++;
+                    }
+                }
+            }
+
+            // Prune old sessions
+            if (data.sessions) {
+                data.sessions = data.sessions.filter(s => s > cutoff);
+            }
+        }
+
+        this.saveToStorage();
+        console.log(`📊 Analytics: Pruned ${pruned} old records`);
+        return pruned;
     }
 }
 
-// Export singleton
+// Create global instance
 const analyticsEngine = new AnalyticsEngine();
-export { analyticsEngine, AnalyticsEngine };
+
+// Export for use in other scripts
+window.AnalyticsEngine = AnalyticsEngine;
+window.analyticsEngine = analyticsEngine;
+
+export { AnalyticsEngine, analyticsEngine };
