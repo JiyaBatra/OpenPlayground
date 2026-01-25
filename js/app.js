@@ -3,6 +3,7 @@
 // ===============================
 
 import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
+import { keyevents } from "./core/Shortcut.js"
 
 class ProjectManager {
     constructor() {
@@ -56,6 +57,7 @@ class ProjectManager {
             filterBtns: document.querySelectorAll('.filter-btn'),
             cardViewBtn: document.getElementById('card-view-btn'),
             listViewBtn: document.getElementById('list-view-btn'),
+            randomProjectBtn: document.getElementById('random-project-btn'),
             emptyState: document.getElementById('empty-state'),
             projectCount: document.getElementById('project-count')
         };
@@ -163,11 +165,31 @@ class ProjectManager {
         const el = this.elements;
 
         if (el.searchInput) {
+            // Enhanced mobile search with debouncing and suggestions
+            let searchTimeout;
+            
             el.searchInput.addEventListener('input', (e) => {
-                this.state.visibilityEngine?.setSearchQuery(e.target.value);
-                this.state.currentPage = 1;
-                this.render();
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    this.handleSearch(e.target.value);
+                }, 300); // Debounce for better performance
             });
+
+            // Enter key support
+            el.searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.handleSearch(e.target.value);
+                }
+                if (e.key === 'Escape') {
+                    e.target.value = '';
+                    this.handleSearch('');
+                    e.target.blur();
+                }
+            });
+
+            // Search history and suggestions
+            this.setupSearchSuggestions(el.searchInput);
         }
 
         if (el.sortSelect) {
@@ -195,6 +217,77 @@ class ProjectManager {
             el.cardViewBtn.addEventListener('click', () => this.setViewMode('card'));
             el.listViewBtn.addEventListener('click', () => this.setViewMode('list'));
         }
+
+        if (el.randomProjectBtn) {
+            el.randomProjectBtn.addEventListener('click', () => this.openRandomProject());
+        }
+    }
+
+    handleSearch(query) {
+        // Save to search history
+        if (query.trim()) {
+            this.saveSearchHistory(query.trim());
+        }
+        
+        this.state.visibilityEngine?.setSearchQuery(query);
+        this.state.currentPage = 1;
+        this.render();
+    }
+
+    setupSearchSuggestions(searchInput) {
+        const suggestionsContainer = document.createElement('div');
+        suggestionsContainer.className = 'search-suggestions';
+        searchInput.parentNode.appendChild(suggestionsContainer);
+
+        searchInput.addEventListener('focus', () => {
+            this.showSearchSuggestions(searchInput, suggestionsContainer);
+        });
+
+        searchInput.addEventListener('blur', (e) => {
+            // Delay hiding to allow clicking on suggestions
+            setTimeout(() => {
+                suggestionsContainer.style.display = 'none';
+            }, 200);
+        });
+    }
+
+    showSearchSuggestions(input, container) {
+        const history = this.getSearchHistory();
+        const currentValue = input.value.toLowerCase();
+        
+        // Get project suggestions based on current input
+        const projectSuggestions = this.state.allProjects
+            .filter(p => p.title.toLowerCase().includes(currentValue))
+            .slice(0, 3)
+            .map(p => p.title);
+
+        const suggestions = [...new Set([...projectSuggestions, ...history])].slice(0, 5);
+        
+        if (suggestions.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.innerHTML = suggestions.map(suggestion => 
+            `<div class="suggestion-item" onclick="this.parentNode.previousElementSibling.value='${suggestion}'; window.projectManagerInstance.handleSearch('${suggestion}');">
+                <i class="ri-search-line"></i>
+                <span>${suggestion}</span>
+            </div>`
+        ).join('');
+        
+        container.style.display = 'block';
+    }
+
+    saveSearchHistory(query) {
+        let history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        history = history.filter(item => item !== query); // Remove duplicates
+        history.unshift(query); // Add to beginning
+        history = history.slice(0, 10); // Keep only last 10
+        localStorage.setItem('searchHistory', JSON.stringify(history));
+    }
+
+    getSearchHistory() {
+        return JSON.parse(localStorage.getItem('searchHistory') || '[]');
     }
 
     setViewMode(mode) {
@@ -205,6 +298,16 @@ class ProjectManager {
         el.listViewBtn?.classList.toggle('active', mode === 'list');
 
         this.render();
+    }
+
+    openRandomProject() {
+        if (this.state.allProjects.length === 0) return;
+
+        const randomIndex = Math.floor(Math.random() * this.state.allProjects.length);
+        const randomProject = this.state.allProjects[randomIndex];
+
+        // Navigate to the project
+        window.location.href = randomProject.link;
     }
 
     /* -----------------------------------------------------------
@@ -463,29 +566,51 @@ function showToast(message) {
 window.ProjectManager = ProjectManager;
 window.fetchContributors = fetchContributors;
 
+// Initialize ProjectManager - handles both immediate and event-based loading
+function initProjectManager() {
+    if (window.projectManagerInstance?.state.initialized) return;
+
+    const projectsGrid = document.getElementById('projects-grid');
+    if (projectsGrid) {
+        console.log('📋 Projects component found, initializing...');
+        const manager = new ProjectManager();
+        manager.init();
+    }
+}
+
 // Listen for component load events from components.js
 document.addEventListener('componentLoaded', (e) => {
     if (e.detail && e.detail.component === 'projects') {
-        const manager = new ProjectManager();
-        manager.init();
+        initProjectManager();
     }
     if (e.detail && e.detail.component === 'contributors') {
         fetchContributors();
     }
 });
 
-// Fade-in animation observer
-document.addEventListener('DOMContentLoaded', () => {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
+// Also check immediately in case components already loaded (module timing issue)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        keyevents();
+        setTimeout(initProjectManager, 100); // Small delay to ensure components are ready
+    });
+} else {
+    // DOM already loaded
+    keyevents();
+    setTimeout(initProjectManager, 100);
+}
 
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-});
+// Fade-in animation observer
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
 console.log('%c🚀 OpenPlayground Unified Logic Active', 'color:#6366f1;font-weight:bold;');
+

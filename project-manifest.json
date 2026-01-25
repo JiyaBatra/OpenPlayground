@@ -1,7 +1,7 @@
 {
-  "version": "2.0",
-  "generated": "2026-01-17T11:57:41.695Z",
-  "count": 255,
+  "version": "2.1",
+  "generated": "2026-01-24T16:38:07.796Z",
+  "count": 359,
   "projects": [
     {
       "folder": "15 Sliding Puzzle",
@@ -9,9 +9,29 @@
       "link": "./projects/15 Sliding Puzzle/index.html"
     },
     {
+      "folder": "2048-puzzle",
+      "path": "./projects/2048-puzzle/project.json",
+      "link": "./projects/2048-puzzle/index.html"
+    },
+    {
+      "folder": "2dshooter",
+      "path": "./projects/2dshooter/project.json",
+      "link": "./projects/2dshooter/index.html"
+    },
+    {
       "folder": "365Days",
       "path": "./projects/365Days/project.json",
       "link": "./projects/365Days/index.html"
+    },
+    {
+      "folder": "AccessibilityColorLab",
+      "path": "./projects/AccessibilityColorLab/project.json",
+      "link": "./projects/AccessibilityColorLab/index.html"
+    },
+    {
+      "folder": "AccessibilityContrastChecker",
+      "path": "./projects/AccessibilityContrastChecker/project.json",
+      "link": "./projects/AccessibilityContrastChecker/index.html"
     },
     {
       "folder": "advanced reaction time",
@@ -22,6 +42,11 @@
       "folder": "Advanced To-Do App",
       "path": "./projects/Advanced To-Do App/project.json",
       "link": "./projects/Advanced To-Do App/index.html"
+    },
+    {
+      "folder": "Advanced Whiteboard",
+      "path": "./projects/Advanced Whiteboard/project.json",
+      "link": "./projects/Advanced Whiteboard/index.html"
     },
     {
       "folder": "Advanced_TextCaseConverter_live_processing_clipboard_integration",
@@ -54,6 +79,21 @@
       "link": "./projects/Alarm-app/index.html"
     },
     {
+      "folder": "AmbientFocusRoom",
+      "path": "./projects/AmbientFocusRoom/project.json",
+      "link": "./projects/AmbientFocusRoom/index.html"
+    },
+    {
+      "folder": "asciiforge",
+      "path": "./projects/asciiforge/project.json",
+      "link": "./projects/asciiforge/index.html"
+    },
+    {
+      "folder": "astroid-game",
+      "path": "./projects/astroid-game/project.json",
+      "link": "./projects/astroid-game/index.html"
+    },
+    {
       "folder": "Attention-Span-Self-Test",
       "path": "./projects/Attention-Span-Self-Test/project.json",
       "link": "./projects/Attention-Span-Self-Test/index.html"
@@ -62,6 +102,21 @@
       "folder": "AttentionDriftVisualizer",
       "path": "./projects/AttentionDriftVisualizer/project.json",
       "link": "./projects/AttentionDriftVisualizer/index.html"
+    },
+    {
+      "folder": "AttentionGarden",
+      "path": "./projects/AttentionGarden/project.json",
+      "link": "./projects/AttentionGarden/index.html"
+    },
+    {
+      "folder": "background-video",
+      "path": "./projects/background-video/project.json",
+      "link": "./projects/background-video/index.html"
+    },
+    {
+      "folder": "balloon-rise",
+      "path": "./projects/balloon-rise/project.json",
+      "link": "./projects/balloon-rise/index.html"
     },
     {
       "folder": "barcode-reader",
@@ -84,6 +139,11 @@
       "link": "./projects/BinaryBrainGame/index.html"
     },
     {
+      "folder": "biospherejs",
+      "path": "./projects/biospherejs/project.json",
+      "link": "./projects/biospherejs/index.html"
+    },
+    {
       "folder": "bmi-calculator",
       "path": "./projects/bmi-calculator/project.json",
       "link": "./projects/bmi-calculator/index.html"
@@ -94,9 +154,19 @@
       "link": "./projects/brainforge/index.html"
     },
     {
+      "folder": "breakout",
+      "path": "./projects/breakout/project.json",
+      "link": "./projects/breakout/index.html"
+    },
+    {
       "folder": "BreathingInterface",
       "path": "./projects/BreathingInterface/project.json",
       "link": "./projects/BreathingInterface/index.html"
+    },
+    {
+      "folder": "brickbreaker",
+      "path": "./projects/brickbreaker/project.json",
+      "link": "./projects/brickbreaker/index.html"
     },
     {
       "folder": "Browser-Based -Code-Editor-and- Compiler-UI",
@@ -129,6 +199,11 @@
       "link": "./projects/carbon-choice-comparator/index.html"
     },
     {
+      "folder": "catch-a-block",
+      "path": "./projects/catch-a-block/project.json",
+      "link": "./projects/catch-a-block/index.html"
+    },
+    {
       "folder": "ChallengeGenerator",
       "path": "./projects/ChallengeGenerator/project.json",
       "link": "./projects/ChallengeGenerator/index.html"
@@ -149,6 +224,16 @@
       "link": "./projects/chat-app/index.html"
     },
     {
+      "folder": "chat-app-main",
+      "path": "./projects/chat-app-main/project.json",
+      "link": "./projects/chat-app-main/public/index.html"
+    },
+    {
+      "folder": "checkers",
+      "path": "./projects/checkers/project.json",
+      "link": "./projects/checkers/index.html"
+    },
+    {
       "folder": "chess",
       "path": "./projects/chess/project.json",
       "link": "./projects/chess/index.html"
@@ -157,6 +242,16 @@
       "folder": "chess-vs-computer",
       "path": "./projects/chess-vs-computer/project.json",
       "link": "./projects/chess-vs-computer/index.html"
+    },
+    {
+      "folder": "chess_game",
+      "path": "./projects/chess_game/project.json",
+      "link": "./projects/chess_game/index.html"
+    },
+    {
+      "folder": "CI-CD-Pipeline-Visualizer",
+      "path": "./projects/CI-CD-Pipeline-Visualizer/project.json",
+      "link": "./projects/CI-CD-Pipeline-Visualizer/index.html"
     },
     {
       "folder": "code-editor",
@@ -169,9 +264,19 @@
       "link": "./projects/CodeEditor/index.html"
     },
     {
+      "folder": "codepong26",
+      "path": "./projects/codepong26/project.json",
+      "link": "./projects/codepong26/index.html"
+    },
+    {
       "folder": "cognitive-load-visualizer",
       "path": "./projects/cognitive-load-visualizer/project.json",
       "link": "./projects/cognitive-load-visualizer/index.html"
+    },
+    {
+      "folder": "color-blindness-checker",
+      "path": "./projects/color-blindness-checker/project.json",
+      "link": "./projects/color-blindness-checker/index.html"
     },
     {
       "folder": "color-code-converter",
@@ -189,9 +294,19 @@
       "link": "./projects/colormoodboard/index.html"
     },
     {
+      "folder": "common-logical-fallacies-explorer",
+      "path": "./projects/common-logical-fallacies-explorer/project.json",
+      "link": "./projects/common-logical-fallacies-explorer/index.html"
+    },
+    {
       "folder": "connect-four",
       "path": "./projects/connect-four/project.json",
       "link": "./projects/connect-four/index.html"
+    },
+    {
+      "folder": "contact-page",
+      "path": "./projects/contact-page/project.json",
+      "link": "./projects/contact-page/index.html"
     },
     {
       "folder": "ConwaysGame",
@@ -209,6 +324,16 @@
       "link": "./projects/CPU Scheduling Visualizer/index.html"
     },
     {
+      "folder": "Cryptographic-Protocol-Simulator",
+      "path": "./projects/Cryptographic-Protocol-Simulator/project.json",
+      "link": "./projects/Cryptographic-Protocol-Simulator/index.html"
+    },
+    {
+      "folder": "css-shapes-and-corners",
+      "path": "./projects/css-shapes-and-corners/project.json",
+      "link": "./projects/css-shapes-and-corners/index.html"
+    },
+    {
       "folder": "CSSBoxShadow",
       "path": "./projects/CSSBoxShadow/project.json",
       "link": "./projects/CSSBoxShadow/index.html"
@@ -217,6 +342,11 @@
       "folder": "currency-converter",
       "path": "./projects/currency-converter/project.json",
       "link": "./projects/currency-converter/index.html"
+    },
+    {
+      "folder": "CursorPhysics",
+      "path": "./projects/CursorPhysics/project.json",
+      "link": "./projects/CursorPhysics/index.html"
     },
     {
       "folder": "Daily-Randomizer",
@@ -239,14 +369,34 @@
       "link": "./projects/DailyGratitudeApp/index.html"
     },
     {
+      "folder": "Daily_Ques_App",
+      "path": "./projects/Daily_Ques_App/project.json",
+      "link": "./projects/Daily_Ques_App/index.html"
+    },
+    {
       "folder": "data-visualization-tool",
       "path": "./projects/data-visualization-tool/project.json",
       "link": "./projects/data-visualization-tool/index.html"
     },
     {
+      "folder": "DatabaseIndexVisualizer",
+      "path": "./projects/DatabaseIndexVisualizer/project.json",
+      "link": "./projects/DatabaseIndexVisualizer/index.html"
+    },
+    {
+      "folder": "dataforge",
+      "path": "./projects/dataforge/project.json",
+      "link": "./projects/dataforge/index.html"
+    },
+    {
       "folder": "decisionSpinner",
       "path": "./projects/decisionSpinner/project.json",
       "link": "./projects/decisionSpinner/index.html"
+    },
+    {
+      "folder": "DecisonConfidence",
+      "path": "./projects/DecisonConfidence/project.json",
+      "link": "./projects/DecisonConfidence/index.html"
     },
     {
       "folder": "dianosur",
@@ -264,6 +414,16 @@
       "link": "./projects/dictonary-app/index.html"
     },
     {
+      "folder": "Digital Mood Landscape",
+      "path": "./projects/Digital Mood Landscape/project.json",
+      "link": "./projects/Digital Mood Landscape/index.html"
+    },
+    {
+      "folder": "digital-alarm",
+      "path": "./projects/digital-alarm/project.json",
+      "link": "./projects/digital-alarm/index.html"
+    },
+    {
       "folder": "digital-clock",
       "path": "./projects/digital-clock/project.json",
       "link": "./projects/digital-clock/index.html"
@@ -272,6 +432,21 @@
       "folder": "Digital-Minimalism-Experiment",
       "path": "./projects/Digital-Minimalism-Experiment/project.json",
       "link": "./projects/Digital-Minimalism-Experiment/index.html"
+    },
+    {
+      "folder": "DigitalEnergyMeter",
+      "path": "./projects/DigitalEnergyMeter/project.json",
+      "link": "./projects/DigitalEnergyMeter/index.html"
+    },
+    {
+      "folder": "DigitalFootprintVisualizer",
+      "path": "./projects/DigitalFootprintVisualizer/project.json",
+      "link": "./projects/DigitalFootprintVisualizer/index.html"
+    },
+    {
+      "folder": "DigitalPresenceMirror",
+      "path": "./projects/DigitalPresenceMirror/project.json",
+      "link": "./projects/DigitalPresenceMirror/index.html"
     },
     {
       "folder": "Digital_Body_Language_Analyzer",
@@ -289,9 +464,24 @@
       "link": "./projects/DragAndDropList/index.html"
     },
     {
+      "folder": "draw-perfect-circle",
+      "path": "./projects/draw-perfect-circle/project.json",
+      "link": "./projects/draw-perfect-circle/index.html"
+    },
+    {
       "folder": "Drum-Kit-Activity",
       "path": "./projects/Drum-Kit-Activity/project.json",
       "link": "./projects/Drum-Kit-Activity/index.html"
+    },
+    {
+      "folder": "Drunken-Walk",
+      "path": "./projects/Drunken-Walk/project.json",
+      "link": "./projects/Drunken-Walk/index.html"
+    },
+    {
+      "folder": "dsa-cheat-sheet",
+      "path": "./projects/dsa-cheat-sheet/project.json",
+      "link": "./projects/dsa-cheat-sheet/index.html"
     },
     {
       "folder": "Dumb Charades",
@@ -334,14 +524,34 @@
       "link": "./projects/Event-Countdown-Timer/index.html"
     },
     {
+      "folder": "evorefresh",
+      "path": "./projects/evorefresh/project.json",
+      "link": "./projects/evorefresh/index.html"
+    },
+    {
+      "folder": "evoshapes",
+      "path": "./projects/evoshapes/project.json",
+      "link": "./projects/evoshapes/index.html"
+    },
+    {
       "folder": "expensesplitter",
       "path": "./projects/expensesplitter/project.json",
       "link": "./projects/expensesplitter/index.html"
     },
     {
+      "folder": "fading-snake",
+      "path": "./projects/fading-snake/project.json",
+      "link": "./projects/fading-snake/index.html"
+    },
+    {
       "folder": "FalseChoiceSimulator",
       "path": "./projects/FalseChoiceSimulator/project.json",
       "link": "./projects/FalseChoiceSimulator/index.html"
+    },
+    {
+      "folder": "file-size-converter",
+      "path": "./projects/file-size-converter/project.json",
+      "link": "./projects/file-size-converter/index.html"
     },
     {
       "folder": "file-upload-preview",
@@ -372,6 +582,11 @@
       "folder": "flowlogic",
       "path": "./projects/flowlogic/project.json",
       "link": "./projects/flowlogic/index.html"
+    },
+    {
+      "folder": "flownet",
+      "path": "./projects/flownet/project.json",
+      "link": "./projects/flownet/index.html"
     },
     {
       "folder": "FocusSessionCompanion",
@@ -449,6 +664,11 @@
       "link": "./projects/habit-tracker/index.html"
     },
     {
+      "folder": "HabitGravityVisualizer",
+      "path": "./projects/HabitGravityVisualizer/project.json",
+      "link": "./projects/HabitGravityVisualizer/index.html"
+    },
+    {
       "folder": "hangman-game",
       "path": "./projects/hangman-game/project.json",
       "link": "./projects/hangman-game/index.html"
@@ -469,9 +689,24 @@
       "link": "./projects/Hover maze/index.html"
     },
     {
+      "folder": "hsl-color-game",
+      "path": "./projects/hsl-color-game/project.json",
+      "link": "./projects/hsl-color-game/index.html"
+    },
+    {
       "folder": "HumanErrorPlayground",
       "path": "./projects/HumanErrorPlayground/project.json",
       "link": "./projects/HumanErrorPlayground/index.html"
+    },
+    {
+      "folder": "IaC Visual Playground",
+      "path": "./projects/IaC Visual Playground/project.json",
+      "link": "./projects/IaC Visual Playground/index.html"
+    },
+    {
+      "folder": "IdeaEvolution",
+      "path": "./projects/IdeaEvolution/project.json",
+      "link": "./projects/IdeaEvolution/index.html"
     },
     {
       "folder": "ideaOfTheDayApp",
@@ -489,9 +724,19 @@
       "link": "./projects/image-particle converter/index.html"
     },
     {
+      "folder": "image-puzzle-jigsaw",
+      "path": "./projects/image-puzzle-jigsaw/project.json",
+      "link": "./projects/image-puzzle-jigsaw/index.html"
+    },
+    {
       "folder": "image-slider",
       "path": "./projects/image-slider/project.json",
       "link": "./projects/image-slider/index.html"
+    },
+    {
+      "folder": "infinite-gallery",
+      "path": "./projects/infinite-gallery/project.json",
+      "link": "./projects/infinite-gallery/index.html"
     },
     {
       "folder": "InfiniteParallaxRunner",
@@ -524,6 +769,21 @@
       "link": "./projects/internet-speed-tester/index.html"
     },
     {
+      "folder": "InvisibleNav",
+      "path": "./projects/InvisibleNav/project.json",
+      "link": "./projects/InvisibleNav/index.html"
+    },
+    {
+      "folder": "iridium-game",
+      "path": "./projects/iridium-game/project.json",
+      "link": "./projects/iridium-game/index.html"
+    },
+    {
+      "folder": "json-formattor",
+      "path": "./projects/json-formattor/project.json",
+      "link": "./projects/json-formattor/index.html"
+    },
+    {
       "folder": "kanban-board",
       "path": "./projects/kanban-board/project.json",
       "link": "./projects/kanban-board/index.html"
@@ -544,6 +804,16 @@
       "link": "./projects/keyplayground/index.html"
     },
     {
+      "folder": "kinetic-loader",
+      "path": "./projects/kinetic-loader/project.json",
+      "link": "./projects/kinetic-loader/index.html"
+    },
+    {
+      "folder": "Kinetic-Typography",
+      "path": "./projects/Kinetic-Typography/project.json",
+      "link": "./projects/Kinetic-Typography/index.html"
+    },
+    {
       "folder": "Life_Choice_Simulator",
       "path": "./projects/Life_Choice_Simulator/project.json",
       "link": "./projects/Life_Choice_Simulator/index.html"
@@ -552,6 +822,11 @@
       "folder": "LiveWebcamToASCII",
       "path": "./projects/LiveWebcamToASCII/project.json",
       "link": "./projects/LiveWebcamToASCII/index.html"
+    },
+    {
+      "folder": "living-typrography",
+      "path": "./projects/living-typrography/project.json",
+      "link": "./projects/living-typrography/index.html"
     },
     {
       "folder": "Loot_Box_Simulator",
@@ -564,6 +839,26 @@
       "link": "./projects/lottery-game/index.html"
     },
     {
+      "folder": "LSB Image Steganography Tool",
+      "path": "./projects/LSB Image Steganography Tool/project.json",
+      "link": "./projects/LSB Image Steganography Tool/index.html"
+    },
+    {
+      "folder": "Lunar-lander",
+      "path": "./projects/Lunar-lander/project.json",
+      "link": "./projects/Lunar-lander/index.html"
+    },
+    {
+      "folder": "Luxury-Todo-list",
+      "path": "./projects/Luxury-Todo-list/project.json",
+      "link": "./projects/Luxury-Todo-list/index.html"
+    },
+    {
+      "folder": "lyric-search",
+      "path": "./projects/lyric-search/project.json",
+      "link": "./projects/lyric-search/index.html"
+    },
+    {
       "folder": "markdown-previewer",
       "path": "./projects/markdown-previewer/project.json",
       "link": "./projects/markdown-previewer/index.html"
@@ -572,6 +867,11 @@
       "folder": "Medicine reminder",
       "path": "./projects/Medicine reminder/project.json",
       "link": "./projects/Medicine reminder/index.html"
+    },
+    {
+      "folder": "meme-generator",
+      "path": "./projects/meme-generator/project.json",
+      "link": "./projects/meme-generator/index.html"
     },
     {
       "folder": "Memory Card Flip Game",
@@ -587,6 +887,11 @@
       "folder": "Memory-Game(Colors)",
       "path": "./projects/Memory-Game(Colors)/project.json",
       "link": "./projects/Memory-Game(Colors)/index.html"
+    },
+    {
+      "folder": "MemoryFade",
+      "path": "./projects/MemoryFade/project.json",
+      "link": "./projects/MemoryFade/index.html"
     },
     {
       "folder": "Mental_Fatigue_Tester",
@@ -629,6 +934,11 @@
       "link": "./projects/MinimalCountdown/index.html"
     },
     {
+      "folder": "MinimalSurvival",
+      "path": "./projects/MinimalSurvival/project.json",
+      "link": "./projects/MinimalSurvival/index.html"
+    },
+    {
       "folder": "mistakerunner",
       "path": "./projects/mistakerunner/project.json",
       "link": "./projects/mistakerunner/index.html"
@@ -659,6 +969,16 @@
       "link": "./projects/mood_tracker/index.html"
     },
     {
+      "folder": "motion-engine-lab",
+      "path": "./projects/motion-engine-lab/project.json",
+      "link": "./projects/motion-engine-lab/index.html"
+    },
+    {
+      "folder": "Multi-Step-Form-Wizard",
+      "path": "./projects/Multi-Step-Form-Wizard/project.json",
+      "link": "./projects/Multi-Step-Form-Wizard/index.html"
+    },
+    {
       "folder": "multiplayer tic-tac-toe",
       "path": "./projects/multiplayer tic-tac-toe/project.json",
       "link": "./projects/multiplayer tic-tac-toe/index.html"
@@ -667,6 +987,16 @@
       "folder": "my-stylish-to-do-list",
       "path": "./projects/my-stylish-to-do-list/project.json",
       "link": "./projects/my-stylish-to-do-list/index.html"
+    },
+    {
+      "folder": "MyFolio",
+      "path": "./projects/MyFolio/project.json",
+      "link": "./projects/MyFolio/index.html"
+    },
+    {
+      "folder": "Neon Vortex",
+      "path": "./projects/Neon Vortex/project.json",
+      "link": "./projects/Neon Vortex/index.html"
     },
     {
       "folder": "Neon_Snake_Arena",
@@ -682,6 +1012,11 @@
       "folder": "news",
       "path": "./projects/news/project.json",
       "link": "./projects/news/index.html"
+    },
+    {
+      "folder": "notepad",
+      "path": "./projects/notepad/project.json",
+      "link": "./projects/notepad/index.html"
     },
     {
       "folder": "NotesTaking",
@@ -754,6 +1089,11 @@
       "link": "./projects/otp-generator/index.html"
     },
     {
+      "folder": "page-not-found",
+      "path": "./projects/page-not-found/project.json",
+      "link": "./projects/page-not-found/index.html"
+    },
+    {
       "folder": "PaginationComponent",
       "path": "./projects/PaginationComponent/project.json",
       "link": "./projects/PaginationComponent/index.html"
@@ -774,6 +1114,11 @@
       "link": "./projects/Particle_Life_Simulation/index.html"
     },
     {
+      "folder": "Password-Generator",
+      "path": "./projects/Password-Generator/project.json",
+      "link": "./projects/Password-Generator/frontend/index.html"
+    },
+    {
       "folder": "password-strength-checker",
       "path": "./projects/password-strength-checker/project.json",
       "link": "./projects/password-strength-checker/index.html"
@@ -787,6 +1132,11 @@
       "folder": "Pattern Memory Game",
       "path": "./projects/Pattern Memory Game/project.json",
       "link": "./projects/Pattern Memory Game/index.html"
+    },
+    {
+      "folder": "pattern-game",
+      "path": "./projects/pattern-game/project.json",
+      "link": "./projects/pattern-game/index.html"
     },
     {
       "folder": "pattern-predictor",
@@ -839,6 +1189,11 @@
       "link": "./projects/PomodoroTimer/index.html"
     },
     {
+      "folder": "portal-flip-puzzle",
+      "path": "./projects/portal-flip-puzzle/project.json",
+      "link": "./projects/portal-flip-puzzle/index.html"
+    },
+    {
       "folder": "Portal_Flip_Puzzle",
       "path": "./projects/Portal_Flip_Puzzle/project.json",
       "link": "./projects/Portal_Flip_Puzzle/index.html"
@@ -867,6 +1222,11 @@
       "folder": "qr-code-generator",
       "path": "./projects/qr-code-generator/project.json",
       "link": "./projects/qr-code-generator/index.html"
+    },
+    {
+      "folder": "QRify - Simple & catchy",
+      "path": "./projects/QRify - Simple & catchy/project.json",
+      "link": "./projects/QRify - Simple & catchy/index.html"
     },
     {
       "folder": "QuantumDiceRoller",
@@ -939,6 +1299,11 @@
       "link": "./projects/Random_Idea_Generator/index.html"
     },
     {
+      "folder": "React-a-gems",
+      "path": "./projects/React-a-gems/project.json",
+      "link": "./projects/React-a-gems/index.html"
+    },
+    {
       "folder": "Reaction-time-game",
       "path": "./projects/Reaction-time-game/project.json",
       "link": "./projects/Reaction-time-game/index.html"
@@ -947,6 +1312,11 @@
       "folder": "ReactionTime",
       "path": "./projects/ReactionTime/project.json",
       "link": "./projects/ReactionTime/index.html"
+    },
+    {
+      "folder": "ReactionTimeArena",
+      "path": "./projects/ReactionTimeArena/project.json",
+      "link": "./projects/ReactionTimeArena/index.html"
     },
     {
       "folder": "Real-Time-Analytics-Dashboard",
@@ -989,9 +1359,34 @@
       "link": "./projects/RegexTester/index.html"
     },
     {
+      "folder": "Retro-StyleLinuxCommand",
+      "path": "./projects/Retro-StyleLinuxCommand/project.json",
+      "link": "./projects/Retro-StyleLinuxCommand/index.html"
+    },
+    {
+      "folder": "RetroRaycastingEngine",
+      "path": "./projects/RetroRaycastingEngine/project.json",
+      "link": "./projects/RetroRaycastingEngine/index.html"
+    },
+    {
+      "folder": "RetroTerminalUI",
+      "path": "./projects/RetroTerminalUI/project.json",
+      "link": "./projects/RetroTerminalUI/index.html"
+    },
+    {
       "folder": "ReverseMaze",
       "path": "./projects/ReverseMaze/project.json",
       "link": "./projects/ReverseMaze/index.html"
+    },
+    {
+      "folder": "RiskRewardGambler",
+      "path": "./projects/RiskRewardGambler/project.json",
+      "link": "./projects/RiskRewardGambler/index.html"
+    },
+    {
+      "folder": "roadmap-generator",
+      "path": "./projects/roadmap-generator/project.json",
+      "link": "./projects/roadmap-generator/index.html"
     },
     {
       "folder": "RoadSafetyQuiz",
@@ -1004,6 +1399,11 @@
       "link": "./projects/rock-paper-scissor/index.html"
     },
     {
+      "folder": "Screenshort-capture",
+      "path": "./projects/Screenshort-capture/project.json",
+      "link": "./projects/Screenshort-capture/index.html"
+    },
+    {
       "folder": "secretdiaryapp",
       "path": "./projects/secretdiaryapp/project.json",
       "link": "./projects/secretdiaryapp/index.html"
@@ -1014,9 +1414,24 @@
       "link": "./projects/Settings_Page_Simulator/index.html"
     },
     {
+      "folder": "shadow-dodge",
+      "path": "./projects/shadow-dodge/project.json",
+      "link": "./projects/shadow-dodge/index.html"
+    },
+    {
+      "folder": "SignDocs",
+      "path": "./projects/SignDocs/project.json",
+      "link": "./projects/SignDocs/index.html"
+    },
+    {
       "folder": "simon-game",
       "path": "./projects/simon-game/project.json",
       "link": "./projects/simon-game/index.html"
+    },
+    {
+      "folder": "SimonSays",
+      "path": "./projects/SimonSays/project.json",
+      "link": "./projects/SimonSays/index.html"
     },
     {
       "folder": "simple-drawing-canvas",
@@ -1027,6 +1442,26 @@
       "folder": "simple-interest-calculator",
       "path": "./projects/simple-interest-calculator/project.json",
       "link": "./projects/simple-interest-calculator/index.html"
+    },
+    {
+      "folder": "simple-portfolio",
+      "path": "./projects/simple-portfolio/project.json",
+      "link": "./projects/simple-portfolio/index.html"
+    },
+    {
+      "folder": "sliding-image",
+      "path": "./projects/sliding-image/project.json",
+      "link": "./projects/sliding-image/index.html"
+    },
+    {
+      "folder": "smart-classrom-timetable",
+      "path": "./projects/smart-classrom-timetable/project.json",
+      "link": "./projects/smart-classrom-timetable/index.html"
+    },
+    {
+      "folder": "Smart-Contract-Execution-Simulator",
+      "path": "./projects/Smart-Contract-Execution-Simulator/project.json",
+      "link": "./projects/Smart-Contract-Execution-Simulator/index.html"
     },
     {
       "folder": "smart-expense-tracker",
@@ -1074,6 +1509,21 @@
       "link": "./projects/space-invaders/index.html"
     },
     {
+      "folder": "Spectral Engine",
+      "path": "./projects/Spectral Engine/project.json",
+      "link": "./projects/Spectral Engine/index.html"
+    },
+    {
+      "folder": "Split Bill Calculator",
+      "path": "./projects/Split Bill Calculator/project.json",
+      "link": "./projects/Split Bill Calculator/index.html"
+    },
+    {
+      "folder": "spot-the-word",
+      "path": "./projects/spot-the-word/project.json",
+      "link": "./projects/spot-the-word/index.html"
+    },
+    {
       "folder": "SQL_Query_Visualizer",
       "path": "./projects/SQL_Query_Visualizer/project.json",
       "link": "./projects/SQL_Query_Visualizer/index.html"
@@ -1107,6 +1557,16 @@
       "folder": "Sudoku_Solver",
       "path": "./projects/Sudoku_Solver/project.json",
       "link": "./projects/Sudoku_Solver/index.html"
+    },
+    {
+      "folder": "synthetic-exchange",
+      "path": "./projects/synthetic-exchange/project.json",
+      "link": "./projects/synthetic-exchange/index.html"
+    },
+    {
+      "folder": "SynthLab",
+      "path": "./projects/SynthLab/project.json",
+      "link": "./projects/SynthLab/index.html"
     },
     {
       "folder": "System-Design-Visualizer",
@@ -1144,9 +1604,19 @@
       "link": "./projects/Theme_Builder/index.html"
     },
     {
+      "folder": "ThoughtSpeedAnalyzer",
+      "path": "./projects/ThoughtSpeedAnalyzer/project.json",
+      "link": "./projects/ThoughtSpeedAnalyzer/index.html"
+    },
+    {
       "folder": "tic-tac-toe",
       "path": "./projects/tic-tac-toe/project.json",
       "link": "./projects/tic-tac-toe/index.html"
+    },
+    {
+      "folder": "tilting-maze",
+      "path": "./projects/tilting-maze/project.json",
+      "link": "./projects/tilting-maze/index.html"
     },
     {
       "folder": "Time-Perception-Experiment",
@@ -1154,9 +1624,19 @@
       "link": "./projects/Time-Perception-Experiment/index.html"
     },
     {
+      "folder": "Time-Perception-Simulator",
+      "path": "./projects/Time-Perception-Simulator/project.json",
+      "link": "./projects/Time-Perception-Simulator/index.html"
+    },
+    {
       "folder": "time-zone-converter",
       "path": "./projects/time-zone-converter/project.json",
       "link": "./projects/time-zone-converter/index.html"
+    },
+    {
+      "folder": "timeline",
+      "path": "./projects/timeline/project.json",
+      "link": "./projects/timeline/index.html"
     },
     {
       "folder": "Tip Calculator",
@@ -1199,6 +1679,11 @@
       "link": "./projects/typing-speed-test/index.html"
     },
     {
+      "folder": "Typing-test",
+      "path": "./projects/Typing-test/project.json",
+      "link": "./projects/Typing-test/index.html"
+    },
+    {
       "folder": "Typing_Heatmap",
       "path": "./projects/Typing_Heatmap/project.json",
       "link": "./projects/Typing_Heatmap/index.html"
@@ -1224,9 +1709,24 @@
       "link": "./projects/UnlimitedColors/index.html"
     },
     {
+      "folder": "untangle",
+      "path": "./projects/untangle/project.json",
+      "link": "./projects/untangle/index.html"
+    },
+    {
       "folder": "url-shortener",
       "path": "./projects/url-shortener/project.json",
       "link": "./projects/url-shortener/index.html"
+    },
+    {
+      "folder": "VectorForge",
+      "path": "./projects/VectorForge/project.json",
+      "link": "./projects/VectorForge/index.html"
+    },
+    {
+      "folder": "virtual-keyboard",
+      "path": "./projects/virtual-keyboard/project.json",
+      "link": "./projects/virtual-keyboard/index.html"
     },
     {
       "folder": "Virtual_Control_Panel",
@@ -1234,9 +1734,19 @@
       "link": "./projects/Virtual_Control_Panel/index.html"
     },
     {
+      "folder": "virtuf",
+      "path": "./projects/virtuf/project.json",
+      "link": "./projects/virtuf/index.html"
+    },
+    {
       "folder": "Visual_Rhythm_Game",
       "path": "./projects/Visual_Rhythm_Game/project.json",
       "link": "./projects/Visual_Rhythm_Game/index.html"
+    },
+    {
+      "folder": "voice-forge",
+      "path": "./projects/voice-forge/project.json",
+      "link": "./projects/voice-forge/index.html"
     },
     {
       "folder": "VoiceControlledMaze",
@@ -1254,9 +1764,19 @@
       "link": "./projects/WeatherSculpture/index.html"
     },
     {
+      "folder": "webkernel",
+      "path": "./projects/webkernel/project.json",
+      "link": "./projects/webkernel/index.html"
+    },
+    {
       "folder": "Whack a Box",
       "path": "./projects/Whack a Box/project.json",
       "link": "./projects/Whack a Box/index.html"
+    },
+    {
+      "folder": "word-checker",
+      "path": "./projects/word-checker/project.json",
+      "link": "./projects/word-checker/index.html"
     },
     {
       "folder": "word-memory-game",
@@ -1277,6 +1797,7 @@
       "folder": "WorldMeetingPlanner",
       "path": "./projects/WorldMeetingPlanner/project.json",
       "link": "./projects/WorldMeetingPlanner/index.html"
+ add-color-palette-generator
     },
     {
       "folder": "color-blindness-checker",
@@ -1287,6 +1808,8 @@
       "folder": "palette-generator",
       "path": "./projects/palette-generator/project.json",
       "link": "./projects/palette-generator/index.html"
+=======
+ main
     }
   ]
 }
