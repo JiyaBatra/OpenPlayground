@@ -2009,6 +2009,11 @@
       "link": "./projects/AsciiForge/index.html"
     },
     {
+      "folder": "WordClock",
+      "path": "./projects/WordClock/project.json",
+      "link": "./projects/WordClock/index.html"
+    },
+    {
       "folder": "liquidBtn",
       "path": "./projects/liquidBtn/project.json",
       "link": "./projects/liquidBtn/index.html"
