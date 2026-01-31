@@ -1780,6 +1780,11 @@
       "path":"./projects/Weather-app/project.json",
       "link":"./projects/Weather-app/index.html"
     }
+    {
+      "folder": "expensetracker",
+      "path": "./projects/expensetracker/project.json",
+      "link": "./projects/expensetracker/index.html"
+    }
 
   ]
 }
