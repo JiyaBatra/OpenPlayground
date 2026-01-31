@@ -2,8 +2,7 @@ name: Auto-assign issue with limit
 
 on:
   issues:
-    types:
-      - opened
+    types: [opened]
 
 jobs:
   auto-assign:
@@ -21,33 +20,35 @@ jobs:
             const username = context.payload.issue.user.login;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const issue_number = context.issue.number;
 
-            const { data } = await github.rest.search.issuesAndPullRequests({
+            // Get all open issues assigned to this user in this repo
+            const { data: issues } = await github.rest.search.issuesAndPullRequests({
               q: `repo:${owner}/${repo} type:issue state:open assignee:${username}`
             });
 
-            const openAssignedCount = data.total_count;
+            const openAssignedCount = issues.total_count;
 
             if (openAssignedCount >= 4) {
               await github.rest.issues.createComment({
                 owner,
                 repo,
-                issue_number,
-                body: `⚠️ Hi @${username}, you already have **${openAssignedCount} active issues assigned**.\n\nYou can only have **4 open issues at a time**. Please complete or close existing ones before taking a new issue.`
+                issue_number: context.issue.number,
+                body: `⚠️ Hi @${username}, you already have **${openAssignedCount} active issues assigned**.\n\nYou can only have **4 open issues at a time**. Please complete or close your existing issues (merge related PRs) before taking a new one. 🚀`
               });
+
+              core.setFailed(`User already has ${openAssignedCount} assigned issues.`);
             } else {
               await github.rest.issues.addAssignees({
                 owner,
                 repo,
-                issue_number,
+                issue_number: context.issue.number,
                 assignees: [username]
               });
 
               await github.rest.issues.createComment({
                 owner,
                 repo,
-                issue_number,
-                body: `✅ Assigned to @${username}. You now have **${openAssignedCount + 1}/4 active issues.** 🚀`
+                issue_number: context.issue.number,
+                body: `✅ Issue successfully assigned to @${username}.\n\nYou now have **${openAssignedCount + 1}/4 active issues**. Good luck! 💪`
               });
             }
