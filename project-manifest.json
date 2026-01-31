@@ -1765,6 +1765,16 @@
       "path":"./projects/Productivity Dashboard/project.json",
       "link":"./projects/Productivity Dashboard/index.html"
     }
+    {
+      "folder":"e-learn",
+      "path":"./projects/e-learn/project.json",
+      "link":"./projects/e-learn/index.html"
+    }
+    {
+      "folder":"one pager",
+      "path":"./projects/one pager/project.json",
+      "link":"./projects/one pager/index.html"
+    }
 
   ]
 }
