@@ -33,7 +33,11 @@
       "path": "./projects/e-learn/project.json",
       "link": "./projects/e-learn/index.html"
     },
-  
+    {
+      "folder": "input-output",
+      "path": "./projects/input-output/project.json",
+      "link": "./projects/input-output/index.html"
+    },
     {
       "folder": "MinimalSurvival",
       "path": "./projects/MinimalSurvival/project.json",
