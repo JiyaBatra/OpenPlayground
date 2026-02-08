@@ -14,6 +14,11 @@
       "link": "./projects/2048-puzzle/index.html"
     },
     {
+      "folder": "forget-curve",
+      "path": "./projects/forget-curve/project.json",
+      "link": "./projects/forget-curve/index.html"
+    },
+    {
       "folder": "one-btn",
       "path": "./projects/one-btn/project.json",
       "link": "./projects/one-btn/index.html"
@@ -34,9 +39,29 @@
       "link": "./projects/e-learn/index.html"
     },
     {
+      "folder": "split-decision",
+      "path": "./projects/split-decision/project.json",
+      "link": "./projects/split-decision/index.html"
+    },
+    {
+      "folder": "Impulse-Control",
+      "path": "./projects/Impulse-Control/project.json",
+      "link": "./projects/Impulse-Control/index.html"
+    },
+    {
       "folder": "input-output",
       "path": "./projects/input-output/project.json",
       "link": "./projects/input-output/index.html"
+    },
+    {
+      "folder": "ChoiceGame",
+      "path": "./projects/ChoiceGame/project.json",
+      "link": "./projects/ChoiceGame/index.html"
+    },
+    {
+      "folder": "UI-Gestures",
+      "path": "./projects/UI-Gestures/project.json",
+      "link": "./projects/UI-Gestures/index.html"
     },
     {
       "folder": "MinimalSurvival",
@@ -2064,6 +2089,11 @@
       "link": "./projects/Digital Mood Landscape/index.html"
     },
     {
+      "folder": "Tower_Defence",
+      "path": "./projects/Tower_Defence/project.json",
+      "link": "./projects/Tower_Defence/index.html"
+    },
+    {
       "folder": "snake world",
       "path": "./projects/snake world/project.json",
       "link": "./projects/snake world/index.html"
@@ -2188,6 +2218,11 @@
       "folder": "puzzleroom",
       "path": "./projects/puzzleroom/project.json",
       "link": "./projects/puzzleroom/index.html"
+    },
+    {
+      "folder": "Study-Buddy",
+      "path": "./projects/Studdy-Buddy/project.json",
+      "link": "./projects/Studdy-Buddy/index.html"
     },
      {
       "folder": "tab-focus-idle-tracker",
