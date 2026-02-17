@@ -2038,10 +2038,15 @@
       "path": "./projects/pac-man-clone/project.json",
       "link": "./projects/pac-man-clone/index.html"
     },
-    {
+{
       "folder": "frogger-clone",
       "path": "./projects/frogger-clone/project.json",
       "link": "./projects/frogger-clone/index.html"
+    },
+    {
+      "folder": "neural-network-visualizer",
+      "path": "./projects/neural-network-visualizer/project.json",
+      "link": "./projects/neural-network-visualizer/index.html"
     }
   ],
   "version": "2.1",
