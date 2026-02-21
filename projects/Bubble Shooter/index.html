@@ -272,6 +272,7 @@
 
     function drawBubble(x, y, colorIndex, scale = 1, alpha = 1) {
         const color = COLORS[colorIndex];
+        if (!color) return;
         ctx.save();
         ctx.globalAlpha = alpha;
         ctx.translate(x, y);
@@ -385,7 +386,7 @@
 
             for (let r = 0; r < ROWS; r++) {
                 for (let c = 0; c < COLS; c++) {
-                    if (grid[r][c] !== -1) {
+                    if (grid[r] && grid[r][c] !== -1) {
                         const pos = getBubblePos(r, c);
                         const dist = Math.hypot(projectile.x - pos.x, projectile.y - pos.y);
                         if (dist < BUBBLE_RADIUS * 1.7) {
@@ -405,16 +406,20 @@
         const targetR = Math.max(0, Math.min(ROWS - 1, r));
         const targetC = Math.max(0, Math.min(COLS - 1, c));
 
-        grid[targetR][targetC] = projectile.colorIndex;
-        
-        const matches = findMatches(targetR, targetC, projectile.colorIndex);
-        if (matches.length >= 3) {
-            popBubbles(matches);
-            dropFloatingBubbles();
-        }
+        if (grid[targetR]) {
+            grid[targetR][targetC] = projectile.colorIndex;
+            
+            const matches = findMatches(targetR, targetC, projectile.colorIndex);
+            if (matches.length >= 3) {
+                popBubbles(matches);
+                dropFloatingBubbles();
+            }
 
-        if (targetR >= ROWS - 2) {
-            endGame();
+            if (targetR >= ROWS - 2) {
+                endGame();
+            } else {
+                spawnProjectile();
+            }
         } else {
             spawnProjectile();
         }
@@ -449,10 +454,12 @@
             const [r, c] = m.split(',').map(Number);
             const pos = getBubblePos(r, c);
             const colorIdx = grid[r][c];
-            animations.push({ x: pos.x, y: pos.y, colorIndex: colorIdx, life: 1 });
-            createParticles(pos.x, pos.y, COLORS[colorIdx]);
-            grid[r][c] = -1;
-            score += 15;
+            if (colorIdx !== -1) {
+                animations.push({ x: pos.x, y: pos.y, colorIndex: colorIdx, life: 1 });
+                createParticles(pos.x, pos.y, COLORS[colorIdx]);
+                grid[r][c] = -1;
+                score += 15;
+            }
         });
         updateUI();
     }
@@ -460,11 +467,11 @@
     function dropFloatingBubbles() {
         const connected = new Set();
         for (let c = 0; c < COLS; c++) {
-            if (grid[0][c] !== -1) traverseConnected(0, c, connected);
+            if (grid[0] && grid[0][c] !== -1) traverseConnected(0, c, connected);
         }
         for (let r = 0; r < ROWS; r++) {
             for (let c = 0; c < COLS; c++) {
-                if (grid[r][c] !== -1 && !connected.has(`${r},${c}`)) {
+                if (grid[r] && grid[r][c] !== -1 && !connected.has(`${r},${c}`)) {
                     const pos = getBubblePos(r, c);
                     const colorIdx = grid[r][c];
                     animations.push({ x: pos.x, y: pos.y, colorIndex: colorIdx, life: 1 });
@@ -482,7 +489,7 @@
         if (connected.has(key)) return;
         connected.add(key);
         getNeighbors(r, c).forEach(n => {
-            if (grid[n.r][n.c] !== -1) traverseConnected(n.r, n.c, connected);
+            if (grid[n.r] && grid[n.r][n.c] !== -1) traverseConnected(n.r, n.c, connected);
         });
     }
 
