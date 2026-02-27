@@ -9,6 +9,7 @@ class ComponentLoader {
             'header': './components/header.html',
             'hero': './components/hero.html',
             'projects': './components/projects.html',
+            'templates': './components/templates.html',
             'contribute': './components/contribute.html',
             'contributors': './components/contributors.html',
             'footer': './components/footer.html',
@@ -67,6 +68,7 @@ class ComponentLoader {
             { name: 'header', selector: '#header-placeholder' },
             { name: 'hero', selector: '#hero-placeholder' },
             { name: 'projects', selector: '#projects-placeholder' },
+            { name: 'templates', selector: '#templates-placeholder' },
             { name: 'contribute', selector: '#contribute-placeholder' },
             { name: 'footer', selector: '#footer-placeholder' },
             { name: 'chatbot', selector: '#chatbot-placeholder' }
