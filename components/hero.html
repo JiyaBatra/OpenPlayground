@@ -61,3 +61,33 @@
         </div>
     </div>
 </header>
+<style>
+    .hero-title{
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -1px;
+
+  /* Background Image inside text */
+  background-image: url("assets/bg.png"); /* apna image path daalo */
+  background-size: 200% auto;
+  background-position: 0% center;
+  background-repeat: no-repeat;
+
+  /* Transparent text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* Smooth moving animation */
+  animation: moveBg 12s linear infinite;
+}
+@keyframes moveBg {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+    </style>
